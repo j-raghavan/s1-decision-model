@@ -1,7 +1,7 @@
 """v1 /v1/decisions API: the s1 decision model behind a typed-decision endpoint.
 
 Serves the fine-tuned Gemma 4 26B-A4B decision model (LoRA trained with <bos>, merged; Hugging Face
-j-raghavan/s1-gemma4-26b-decision) through a local Ollama, int4, imported as `s1-gemma4-26b`. One forward pass per
+j-raghavan/s1-gemma4-26b-decision) through a local Ollama, int4, published as `jrlabs01/s1`. One forward pass per
 question reads the option-letter probabilities (two passes for more than 26 options). Ollama does not add <bos> to
 an imported model, so the API prepends it (S1_ADD_BOS).
 Probabilities are calibrated per answer type with api/calibration_s1.json, fitted on the dev splits scored through
@@ -36,7 +36,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "eval" / "jevbench"))
 from run_ollama import OLLAMA, ollama_fetcher, score_case  # noqa: E402
 
-MODEL = os.environ.get("S1_MODEL", os.environ.get("S1_TEACHER_MODEL", "s1-gemma4-26b"))
+MODEL = os.environ.get("S1_MODEL", os.environ.get("S1_TEACHER_MODEL", "jrlabs01/s1"))  # ollama pull jrlabs01/s1
 CALIBRATION = Path(os.environ.get("S1_CALIBRATION", ROOT / "api" / "calibration_s1.json"))
 VERSION = "s1-gemma4-26b-v1"
 # Ollama does not add <bos> to a model imported from safetensors, and Gemma 4 degrades without it, so the API

@@ -56,11 +56,13 @@ model = Gemma4ForConditionalGeneration.from_pretrained(
 # and read the next-token logits of " A", " B", ... (see examples/quickstart.py).
 ```
 
-**HTTP API.** `api/server.py` serves `POST /v1/decisions` with per-type calibration, backed by a local Ollama:
+**Locally with Ollama** (int4 build, about 17 GB): `ollama pull jrlabs01/s1`.
+
+**HTTP API.** `api/server.py` serves `POST /v1/decisions` with per-type calibration, backed by that local Ollama model:
 
 ```bash
 uv sync --extra api
-uv run --extra api uvicorn api.server:app --port 8000
+S1_MODEL=jrlabs01/s1 uv run --extra api uvicorn api.server:app --port 8000
 curl -s localhost:8000/v1/decisions -H 'content-type: application/json' -d '{
   "state": {"ticket": "I was charged twice for order 4471."},
   "questions": {"team": {"type": "choice", "instructions": "Which team should handle this?",

@@ -79,3 +79,16 @@ def test_int4_row_only_when_scored(site: Path):
 def test_not_affiliated_statement(site: Path):
     for name in ("index.html", "leaderboard.html"):
         assert "not affiliated" in (site / name).read_text(encoding="utf-8")
+
+
+def test_playground_builds_when_switched_on(tmp_path, monkeypatch):
+    """The playground is off until the Space is deployed; it must still build, with its examples and nav link."""
+    builder = _load_builder()
+    monkeypatch.setattr(builder, "LIVE_DEMO", True)
+    monkeypatch.setattr(builder, "DEMO_URL", "playground.html")
+    out = tmp_path / "site_on"
+    builder.build(out)
+    page = (out / "playground.html").read_text(encoding="utf-8")
+    assert builder.SPACE_ID in page and builder.GRADIO_CLIENT in page
+    assert (out / "assets" / "examples.json").exists() and (out / "assets" / "playground.js").exists()
+    assert 'href="playground.html"' in (out / "index.html").read_text(encoding="utf-8")

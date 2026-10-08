@@ -30,7 +30,10 @@ HF_MODEL = "https://huggingface.co/j-raghavan/s1-gemma4-26b-decision"
 HF_DATASET = "https://huggingface.co/datasets/j-raghavan/s1-decision-data"
 MODEL_ID = "j-raghavan/s1-gemma4-26b-decision"
 # Link or button to a hosted demo. Empty: the page shows "Demo coming soon".
-DEMO_URL = "playground.html"
+# The playground calls the ZeroGPU Space (space/, scripts/deploy_space.py). Off until that Space is deployed, so the
+# site never links to a demo that cannot answer.
+LIVE_DEMO = False
+DEMO_URL = "playground.html" if LIVE_DEMO else "https://ollama.com/jrlabs01/s1"
 SPACE_ID = "j-raghavan/s1-decision-demo"  # the ZeroGPU Space that serves the playground (space/ in this repo)
 GRADIO_CLIENT = "https://cdn.jsdelivr.net/npm/@gradio/client@2.7.1/dist/index.min.js"
 
@@ -227,10 +230,10 @@ print(dict(zip(options, probs.tolist())))         # raw (uncalibrated) probabili
 '''
 
 OLLAMA_SNIPPET = r'''
-# After importing the merged weights into Ollama as "s1-gemma4-26b" (see the repo docs).
-# Imported models do not add <bos>, so the raw prompt starts with it.
+ollama pull jrlabs01/s1        # the int4 build, about 17 GB
+# Send raw prompts that start with <bos>: Ollama's chat formatting changes the prompt and the answers.
 curl -s localhost:11434/api/generate -d '{
-  "model": "s1-gemma4-26b", "raw": true, "stream": false,
+  "model": "jrlabs01/s1", "raw": true, "stream": false,
   "logprobs": true, "top_logprobs": 20,
   "options": {"temperature": 0, "num_predict": 1},
   "prompt": "<bos><|turn>user\nYou are a decision model. Read the state and answer the question by choosing one option.\n\nSTATE:\n{\n \"ticket\": \"I was charged twice for order 4471.\"\n}\n\nQUESTION: Which team should handle this?\n\nOPTIONS:\nA) billing: Payments and refunds\nB) shipping: Deliveries\nC) tech: Bugs\n\nAnswer with the option letter only.<turn|>\n<|turn>model\n<|channel>thought\n<channel|>Answer:"
@@ -259,7 +262,8 @@ def page(title: str, description: str, active: str, content: str) -> str:
     nav = {"index": "", "leaderboard": "", "playground": ""}
     nav[active] = ' aria-current="page"'
     return render("layout.html", title=esc(title), description=esc(description), content=content,
-                  nav_index=nav["index"], nav_leaderboard=nav["leaderboard"], nav_playground=nav["playground"],
+                  nav_index=nav["index"], nav_leaderboard=nav["leaderboard"],
+                  nav_playground=(f'<a href="playground.html"{nav["playground"]}>Playground</a>' if LIVE_DEMO else ""),
                   github=GITHUB, hf_model=HF_MODEL,
                   methodology=gh("docs/methodology.md"), license=gh("LICENSE"))
 
@@ -287,7 +291,8 @@ def build_index(jev: dict, custom: dict) -> str:
                           detail + f'Calibrated: {CALIBRATED_README["s1_custom"]:.3f}. JSON-state and slide-layout '
                           'rules; Jev has no predictions on this set.'))
     if DEMO_URL:
-        demo = f'<a class="btn btn-primary" href="{esc(DEMO_URL)}">Try it in the playground</a>'
+        demo = (f'<a class="btn btn-primary" href="{esc(DEMO_URL)}">Try it in the playground</a>' if LIVE_DEMO else
+                f'<a class="btn btn-primary" href="{esc(DEMO_URL)}" rel="noopener">Run it locally with Ollama</a>')
     else:
         demo = '<span class="btn btn-disabled" aria-disabled="true">Demo coming soon</span>'
     return page(
@@ -363,8 +368,11 @@ def build(out: Path, results: Path = ROOT / "results") -> dict:
         shutil.copy2(f, out / "assets" / f.name)
     (out / "index.html").write_text(build_index(jev, custom), encoding="utf-8")
     (out / "leaderboard.html").write_text(build_leaderboard(jev, custom), encoding="utf-8")
-    (out / "playground.html").write_text(build_playground(), encoding="utf-8")
-    shutil.copy2(ROOT / "space" / "examples.json", out / "assets" / "examples.json")  # one source for both UIs
+    if LIVE_DEMO:
+        (out / "playground.html").write_text(build_playground(), encoding="utf-8")
+        shutil.copy2(ROOT / "space" / "examples.json", out / "assets" / "examples.json")  # one source for both UIs
+    else:
+        (out / "assets" / "playground.js").unlink(missing_ok=True)
     (out / ".nojekyll").write_text("", encoding="utf-8")
     check_readout(ROOT / "README.md")
     return {"jevbench": jev, "custom": custom}

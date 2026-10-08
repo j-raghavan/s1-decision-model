@@ -98,14 +98,14 @@ token with `logprobs` and `temperature 0` on the same prompt.
 ### Local, quantised (Ollama int4)
 
 ```bash
-hf download j-raghavan/s1-gemma4-26b-decision --local-dir s1-gemma4-26b
-printf 'FROM %s\n' "$PWD/s1-gemma4-26b" > Modelfile
-ollama create s1-gemma4-26b --quantize int4 -f Modelfile     # about 17 GB on disk
+ollama pull jrlabs01/s1     # the int4 build, about 17 GB on disk
 ```
 
-Send raw prompts that start with `<bos>`: Ollama adds it for its library Gemma models but not for an imported one. The
-repository's API does this for you (`S1_MODEL=s1-gemma4-26b uv run --extra api uvicorn api.server:app`), with
-calibration fitted on the int4 build's own dev predictions (`api/calibration_s1.json`).
+Send **raw** prompts (`"raw": true`) that start with `<bos>`: the build does not add it, and Ollama's own chat
+formatting changes the prompt and the answers. The repository's API does this for you
+(`S1_MODEL=jrlabs01/s1 uv run --extra api uvicorn api.server:app`), with calibration fitted on the int4 build's own dev
+predictions (`api/calibration_s1.json`). To build it yourself instead: download this repo, write a Modelfile with
+`FROM <folder>`, and run `ollama create <name> --quantize int4 -f Modelfile`.
 
 Measured cost of int4 against bf16 on the test sets: JevBench 0.801 vs 0.808 (the same answer on 92% of cases; paired
 36 better, 48 worse, p = 0.23) and custom 0.966 vs 0.971 (p = 0.18); neither difference is significant. On a 32 GB
