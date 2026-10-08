@@ -56,7 +56,9 @@ model = Gemma4ForConditionalGeneration.from_pretrained(
 # and read the next-token logits of " A", " B", ... (see examples/quickstart.py).
 ```
 
-**Locally with Ollama** (int4 build, about 17 GB): `ollama pull jrlabs01/s1`.
+**Locally with Ollama** (int4 build, about 17 GB): `ollama pull jrlabs01/s1`, then `examples/try_ollama.sh` runs four
+sample decisions, and `examples/ollama_decide.py` asks your own question and prints each option's probability and the
+timings (standard library only).
 
 **HTTP API.** `api/server.py` serves `POST /v1/decisions` with per-type calibration, backed by that local Ollama model:
 

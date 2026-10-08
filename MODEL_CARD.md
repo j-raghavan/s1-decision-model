@@ -99,7 +99,12 @@ token with `logprobs` and `temperature 0` on the same prompt.
 
 ```bash
 ollama pull jrlabs01/s1     # the int4 build, about 17 GB on disk
+python3 examples/ollama_decide.py --state '{"ticket": "I was charged twice."}' \
+    --question "Which team should handle this?" --option billing=Payments --option tech=Bugs
 ```
+
+`examples/ollama_decide.py` (in the GitHub repository) builds the prompt and reads the probabilities correctly; Ollama
+lists two spellings of each option letter (`" A"` and `"A"`), and only the first, most likely one must be kept.
 
 Send **raw** prompts (`"raw": true`) that start with `<bos>`: the build does not add it, and Ollama's own chat
 formatting changes the prompt and the answers. The repository's API does this for you
