@@ -1,0 +1,28 @@
+{
+ "merge": {
+  "exit": 0,
+  "summary": [
+   "{\"merged_weights\": 205, \"scale\": 2.0, \"pieces\": 11, \"out\": \"/content/merged\"}"
+  ],
+  "minutes": 5.3,
+  "after": {
+   "free_ram_gb": 54.4,
+   "free_disk_gb": 23.1
+  }
+ },
+ "verify": {
+  "exit": 0,
+  "agreement_with_adapter_run": 0.97,
+  "n": 200,
+  "required": 0.93,
+  "pass": true,
+  "acc_merged": 0.8464,
+  "acc_adapter_same_cases": 0.8459
+ },
+ "upload": {
+  "repo": "j-raghavan/s1-gemma4-26b-decision",
+  "private": true,
+  "files": 19,
+  "minutes": 8.2
+ }
+}

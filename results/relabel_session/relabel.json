@@ -1,0 +1,59 @@
+{
+ "label": {
+  "exit": 0,
+  "labelled": 90400,
+  "wanted": 90400,
+  "minutes": 9.3
+ },
+ "reproducibility": {
+  "families_compared": 1190,
+  "families_only_new": 0,
+  "families_only_training": 0,
+  "max_agreement_diff": 0.286,
+  "worst": [
+   [
+    "syn_1681_duplicate_detection",
+    0.714,
+    1.0
+   ],
+   [
+    "syn_1896_duplicate_detection_hospital_admissions",
+    0.75,
+    1.0
+   ],
+   [
+    "syn_1298_food_safety_duplicate_detection",
+    0.833,
+    1.0
+   ],
+   [
+    "syn_1350_duplicate_detection",
+    0.857,
+    1.0
+   ],
+   [
+    "syn_0273_last_mile_violation_detection",
+    0.857,
+    1.0
+   ]
+  ],
+  "summary_training": [
+   "synthetic: 986 families, kept 11312 rows, dropped 265 without generator/teacher consensus",
+   "total 90135 targets -> data/train/targets_bos_core.jsonl; 0 rows had no teacher label and were skipped"
+  ],
+  "summary_new": [
+   "synthetic: 986 families, kept 11311 rows, dropped 266 without generator/teacher consensus",
+   "total 90134 targets -> data/train/targets_bos_core.jsonl; 0 rows had no teacher label and were skipped"
+  ],
+  "rows": {
+   "training": 101469,
+   "core": 90134
+  }
+ },
+ "sha256": {
+  "data/train/targets_bos_core.jsonl": "2eb923242fafef3e5e1a190ab173456014825d7f9f48f4fb827d86deff51e0d9",
+  "data/train/targets_bos100k.jsonl": "e6d54c554462adaf9481ee5a5c41c7fcc0301239bc76a9a62d0386bc4cdd1d12",
+  "data/train/bos100k_core_rows.jsonl": "743332c54d5625d4e8009582ae0172a888feb4ecf519add4470b6bdb1f0cf093",
+  "data/train/bos100k_fixed_rows.jsonl": "f839199fe39e05d39fa8c5c0b0661308df5ac818f0b410dee9c045555bf0245d"
+ }
+}

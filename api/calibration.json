@@ -1,0 +1,21 @@
+{
+  "fitted_on": [
+    "jevbench_dev:base-bos-vllm",
+    "custom_dev2:base-bos-vllm"
+  ],
+  "n": {
+    "choice": 1383,
+    "score": 540,
+    "noul": 1183
+  },
+  "choice": {
+    "temperature": 4.0930901769850525
+  },
+  "score": {
+    "temperature": 3.778874062193862
+  },
+  "noul": {
+    "a": 0.15153301911920147,
+    "b": 1.0928881547140816
+  }
+}

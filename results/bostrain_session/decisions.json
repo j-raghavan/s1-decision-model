@@ -1,0 +1,158 @@
+{
+ "canary": {
+  "exit": 0,
+  "agreement": 0.965,
+  "cases": 200,
+  "expected_cases": 200,
+  "required": 0.93,
+  "pass": true
+ },
+ "relabel": {
+  "core_labelled": 90400,
+  "core_wanted": 90400,
+  "training_file_rows": 101470,
+  "targets_log_summary": [
+   "synthetic: 986 families, kept 11312 rows, dropped 265 without generator/teacher consensus",
+   "total 90135 targets -> data/train/targets_bos_core.jsonl; 0 rows had no teacher label and were skipped"
+  ]
+ },
+ "full_run": {
+  "targets": "data/train/targets_bos100k.jsonl",
+  "exit": 0,
+  "snapshots": [
+   "step-500",
+   "step-1000",
+   "step-1500",
+   "step-2000",
+   "step-2500",
+   "last"
+  ]
+ },
+ "final": {
+  "engine": "vllm",
+  "report": [
+   {
+    "name": "F-step-500",
+    "jev_acc": 0.7996359860883142,
+    "coverage": 1.0,
+    "custom_newly_wrong": 30,
+    "custom_newly_right": 28,
+    "custom_p": 0.8956832138895903,
+    "rule_net_loss": 4,
+    "rule_cap": 16.0,
+    "regresses": false,
+    "eligible": true,
+    "custom_change": -0.0010804970286331713
+   },
+   {
+    "name": "F-step-1000",
+    "jev_acc": 0.8052710826990207,
+    "coverage": 1.0,
+    "custom_newly_wrong": 20,
+    "custom_newly_right": 46,
+    "custom_p": 0.0018582303075658085,
+    "rule_net_loss": -24,
+    "rule_cap": 16.0,
+    "regresses": false,
+    "eligible": true,
+    "custom_change": 0.014046461372231226
+   },
+   {
+    "name": "F-step-1500",
+    "jev_acc": 0.8337824875297158,
+    "coverage": 1.0,
+    "custom_newly_wrong": 1,
+    "custom_newly_right": 53,
+    "custom_p": 6.106226635438361e-15,
+    "rule_net_loss": -50,
+    "rule_cap": 16.0,
+    "regresses": false,
+    "eligible": true,
+    "custom_change": 0.028092922744462453
+   },
+   {
+    "name": "F-step-2000",
+    "jev_acc": 0.8074044211516495,
+    "coverage": 1.0,
+    "custom_newly_wrong": 10,
+    "custom_newly_right": 40,
+    "custom_p": 2.3861331676755526e-05,
+    "rule_net_loss": -28,
+    "rule_cap": 16.0,
+    "regresses": false,
+    "eligible": true,
+    "custom_change": 0.01620745542949757
+   },
+   {
+    "name": "F-step-2500",
+    "jev_acc": 0.8170172744230393,
+    "coverage": 1.0,
+    "custom_newly_wrong": 6,
+    "custom_newly_right": 38,
+    "custom_p": 9.430375484953402e-07,
+    "rule_net_loss": -30,
+    "rule_cap": 16.0,
+    "regresses": false,
+    "eligible": true,
+    "custom_change": 0.01728795245813074
+   },
+   {
+    "name": "F-last",
+    "jev_acc": 0.8234387908223829,
+    "coverage": 1.0,
+    "custom_newly_wrong": 4,
+    "custom_newly_right": 33,
+    "custom_p": 1.0843941709026694e-06,
+    "rule_net_loss": -27,
+    "rule_cap": 16.0,
+    "regresses": false,
+    "eligible": true,
+    "custom_change": 0.015667206915180983
+   }
+  ],
+  "best": "F-step-1500",
+  "fallback_no_eligible": null,
+  "pilot2_reference": [
+   {
+    "name": "pilot2",
+    "jev_acc": 0.8175316676425323,
+    "coverage": 1.0,
+    "custom_newly_wrong": 52,
+    "custom_newly_right": 20,
+    "custom_p": 0.00020771603022674048,
+    "rule_net_loss": 34,
+    "rule_cap": 16.0,
+    "regresses": true,
+    "eligible": false,
+    "custom_change": -0.01728795245813074
+   }
+  ]
+ },
+ "test": {
+  "run_id": "g26-full-vllm",
+  "snapshot": "F-step-1500",
+  "adapter": "/content/adapterF/step-1500",
+  "jevbench_acc": 0.8077272727272727,
+  "custom_acc": 0.9708333333333333,
+  "custom_vs_untuned": {
+   "overall": {
+    "n": 960,
+    "newly_wrong": 2,
+    "newly_right": 24,
+    "p": 1.049041748046875e-05
+   },
+   "rule": {
+    "n": 320,
+    "newly_wrong": 2,
+    "newly_right": 22,
+    "p": 3.5881996154785156e-05
+   },
+   "rule_net_loss": -20,
+   "rule_cap": 6.4,
+   "regresses": false,
+   "accuracy_change": 0.022916666666666665,
+   "non_inferior": true
+  },
+  "untuned_reference": "base-bos-vllm"
+ }
+}

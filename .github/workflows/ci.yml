@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: |
+            uv.lock
+            pyproject.toml
+      - name: Lockfile is up to date
+        run: uv lock --check
+      - name: Ruff
+        run: uv run --only-group dev ruff check --output-format=github .
+
+  tests:
+    name: Tests (CPU)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: |
+            uv.lock
+            pyproject.toml
+      # uv.lock pins the CUDA build of torch for Linux, which pulls several GB of NVIDIA wheels. CI installs the same
+      # locked versions of everything, but takes torch from the CPU-only index.
+      - name: Install locked dependencies with CPU-only torch
+        run: |
+          uv venv
+          uv export --frozen --no-hashes --no-emit-project --extra train --extra api --group dev \
+            --output-file "$RUNNER_TEMP/constraints.txt"
+          uv pip install --torch-backend cpu -r pyproject.toml --extra train --extra api --group dev \
+            --constraints "$RUNNER_TEMP/constraints.txt"
+          uv pip show torch | grep -E '^(Name|Version)'
+      - name: Cache Hugging Face weights used by the tests
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/huggingface/hub/models--answerdotai--ModernBERT-large
+          key: hf-modernbert-large-v1
+      - name: Pytest
+        run: uv run --no-sync pytest -q -rs tests/
+
+  provenance:
+    name: Provenance and licence check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          enable-cache: false
+      - name: Walk lineage.yaml against the Hugging Face Hub
+        run: uv run --no-project python scripts/check_lineage.py

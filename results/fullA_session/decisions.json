@@ -1,0 +1,93 @@
+{
+ "canary": {
+  "exit": 0,
+  "agreement": 0.965,
+  "cases": 200,
+  "expected_cases": 200,
+  "required": 0.93,
+  "pass": true
+ },
+ "full_run": {
+  "targets": "data/train/targets_full_new.jsonl",
+  "exit": 1,
+  "snapshots": [
+   "step-500",
+   "step-1000"
+  ]
+ },
+ "final": {
+  "engine": "vllm",
+  "report": [
+   {
+    "name": "F-step-500",
+    "jev_acc": 0.8088962878707889,
+    "coverage": 1.0,
+    "custom_newly_wrong": 30,
+    "custom_newly_right": 47,
+    "custom_p": 0.06754925145902678,
+    "rule_net_loss": -16,
+    "rule_cap": 16.0,
+    "regresses": false,
+    "eligible": true,
+    "custom_change": 0.009184224743381956
+   },
+   {
+    "name": "F-step-1000",
+    "jev_acc": 0.7891917912095295,
+    "coverage": 1.0,
+    "custom_newly_wrong": 24,
+    "custom_newly_right": 56,
+    "custom_p": 0.0004515172719148107,
+    "rule_net_loss": -31,
+    "rule_cap": 16.0,
+    "regresses": false,
+    "eligible": true,
+    "custom_change": 0.01728795245813074
+   }
+  ],
+  "best": "F-step-500",
+  "fallback_no_eligible": null,
+  "pilot2_reference": [
+   {
+    "name": "pilot2",
+    "jev_acc": 0.8148163612686894,
+    "coverage": 1.0,
+    "custom_newly_wrong": 47,
+    "custom_newly_right": 17,
+    "custom_p": 0.0002268823828832806,
+    "rule_net_loss": 30,
+    "rule_cap": 16.0,
+    "regresses": true,
+    "eligible": false,
+    "custom_change": -0.01620745542949757
+   }
+  ]
+ },
+ "test": {
+  "run_id": "g26-full-vllm",
+  "snapshot": "F-step-500",
+  "adapter": "/content/adapterF/step-500",
+  "jevbench_acc": 0.7918181818181819,
+  "custom_acc": 0.9479166666666666,
+  "custom_vs_untuned": {
+   "overall": {
+    "n": 960,
+    "newly_wrong": 13,
+    "newly_right": 21,
+    "p": 0.22948101302608848
+   },
+   "rule": {
+    "n": 320,
+    "newly_wrong": 13,
+    "newly_right": 20,
+    "p": 0.296206368599087
+   },
+   "rule_net_loss": -7,
+   "rule_cap": 6.4,
+   "regresses": false,
+   "accuracy_change": 0.008333333333333333,
+   "non_inferior": true
+  },
+  "untuned_reference": "gemma4-26b-bf16-vllm"
+ }
+}

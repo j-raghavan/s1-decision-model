@@ -1,0 +1,24 @@
+14:10:52 NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887 MiB
+14:13:40 setup done, model downloaded in 166s, pilot-2 adapter present: True
+14:14:26 canary: HF vs saved vLLM agreement 0.965 on 200/200 cases (need 0.93) -> PASS
+15:05:16 full run exit 1, snapshots ['step-500', 'step-1000']
+15:06:52 vLLM ready in 74s (--max-loras 1 --max-cpu-loras 3), all 3 adapters answer
+15:07:03 final dev jevbench_dev: untuned exit 0
+15:07:20 final dev jevbench_dev: F-step-500 exit 0
+15:07:32 final dev jevbench_dev: F-step-1000 exit 0
+15:07:43 final dev jevbench_dev: pilot2 exit 0
+15:07:59 final dev custom_dev2: untuned exit 0
+15:08:15 final dev custom_dev2: F-step-500 exit 0
+15:08:32 final dev custom_dev2: F-step-1000 exit 0
+15:08:49 final dev custom_dev2: pilot2 exit 0
+15:08:56 final: vLLM canary (pilot 2 after adapter swapping) agreement 0.975 on 200/200 -> PASS
+15:09:07 final: untuned dev jev 0.746 custom 0.923 (vllm)
+15:09:07 final F-step-500     jev_dev 0.809 coverage 1.00 custom change +0.92 pts (-30/+47) eligible
+15:09:07 final F-step-1000    jev_dev 0.789 coverage 1.00 custom change +1.73 pts (-24/+56) eligible
+15:09:07 reference pilot2 jev_dev 0.815 custom change -1.62 pts (not a candidate)
+15:09:07 chosen snapshot: F-step-500
+15:10:07 vLLM ready in 60s (--max-loras 1 --max-cpu-loras 2), all 2 adapters answer
+15:10:12 test: vLLM canary (pilot 2 after adapter swapping) agreement 0.980 on 200/200 -> PASS
+15:10:39 TEST jevbench exit 0
+15:10:47 TEST custom exit 0
+15:10:58 TEST jevbench raw acc 0.792, custom raw acc 0.948, custom vs untuned -13/+21 p=0.229, custom change +0.83 pts, within 1.5-point margin: True

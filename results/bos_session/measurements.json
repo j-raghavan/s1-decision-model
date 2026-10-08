@@ -1,0 +1,224 @@
+{
+ "bos_check": {
+  "pass": true,
+  "with_bos_first": [
+   2,
+   105,
+   2364
+  ],
+  "without_first": [
+   105,
+   2364,
+   107
+  ]
+ },
+ "canary": {
+  "agreement": 0.975,
+  "cases": 200,
+  "expected": 200,
+  "required": 0.95,
+  "pass": true
+ },
+ "latency_bf16": {
+  "untuned": {
+   "exit": 0,
+   "engine_note": "vLLM --enforce-eager, no prefix caching, one request at a time",
+   "all": {
+    "n": 216,
+    "p50_ms": 40.2,
+    "p95_ms": 133.1
+   },
+   "by_slice": {
+    "aegis2": {
+     "n": 20,
+     "p50_ms": 36.2,
+     "p95_ms": 44.5
+    },
+    "aegis2_response": {
+     "n": 20,
+     "p50_ms": 41.0,
+     "p95_ms": 43.0
+    },
+    "atbench500": {
+     "n": 20,
+     "p50_ms": 87.8,
+     "p95_ms": 156.4
+    },
+    "banking77": {
+     "n": 20,
+     "p50_ms": 131.9,
+     "p95_ms": 198.2
+    },
+    "jailbreak_classification": {
+     "n": 20,
+     "p50_ms": 39.0,
+     "p95_ms": 61.1
+    },
+    "medmcqa": {
+     "n": 20,
+     "p50_ms": 35.3,
+     "p95_ms": 507.8
+    },
+    "medqa_usmle": {
+     "n": 20,
+     "p50_ms": 40.6,
+     "p95_ms": 48.7
+    },
+    "mmlu_pro": {
+     "n": 20,
+     "p50_ms": 38.8,
+     "p95_ms": 44.8
+    },
+    "prompt_injections": {
+     "n": 16,
+     "p50_ms": 37.2,
+     "p95_ms": 39.0
+    },
+    "pubmedqa": {
+     "n": 20,
+     "p50_ms": 46.0,
+     "p95_ms": 49.3
+    },
+    "scienceqa_text": {
+     "n": 20,
+     "p50_ms": 35.6,
+     "p95_ms": 40.0
+    }
+   }
+  },
+  "optionA": {
+   "exit": 0,
+   "engine_note": "vLLM --enforce-eager, no prefix caching, one request at a time",
+   "all": {
+    "n": 216,
+    "p50_ms": 48.5,
+    "p95_ms": 360.5
+   },
+   "by_slice": {
+    "aegis2": {
+     "n": 20,
+     "p50_ms": 48.1,
+     "p95_ms": 54.6
+    },
+    "aegis2_response": {
+     "n": 20,
+     "p50_ms": 48.2,
+     "p95_ms": 48.9
+    },
+    "atbench500": {
+     "n": 20,
+     "p50_ms": 97.1,
+     "p95_ms": 172.2
+    },
+    "banking77": {
+     "n": 20,
+     "p50_ms": 145.5,
+     "p95_ms": 504.7
+    },
+    "jailbreak_classification": {
+     "n": 20,
+     "p50_ms": 48.4,
+     "p95_ms": 66.0
+    },
+    "medmcqa": {
+     "n": 20,
+     "p50_ms": 48.3,
+     "p95_ms": 387.9
+    },
+    "medqa_usmle": {
+     "n": 20,
+     "p50_ms": 48.4,
+     "p95_ms": 53.2
+    },
+    "mmlu_pro": {
+     "n": 20,
+     "p50_ms": 48.4,
+     "p95_ms": 51.1
+    },
+    "prompt_injections": {
+     "n": 16,
+     "p50_ms": 48.5,
+     "p95_ms": 49.7
+    },
+    "pubmedqa": {
+     "n": 20,
+     "p50_ms": 50.4,
+     "p95_ms": 53.9
+    },
+    "scienceqa_text": {
+     "n": 20,
+     "p50_ms": 48.3,
+     "p95_ms": 667.4
+    }
+   }
+  }
+ },
+ "fp8": {
+  "latency": {
+   "exit": 0,
+   "engine_note": "vLLM --enforce-eager, no prefix caching, one request at a time",
+   "all": {
+    "n": 216,
+    "p50_ms": 28.0,
+    "p95_ms": 95.3
+   },
+   "by_slice": {
+    "aegis2": {
+     "n": 20,
+     "p50_ms": 27.2,
+     "p95_ms": 35.5
+    },
+    "aegis2_response": {
+     "n": 20,
+     "p50_ms": 28.3,
+     "p95_ms": 29.1
+    },
+    "atbench500": {
+     "n": 20,
+     "p50_ms": 63.7,
+     "p95_ms": 120.5
+    },
+    "banking77": {
+     "n": 20,
+     "p50_ms": 94.2,
+     "p95_ms": 141.9
+    },
+    "jailbreak_classification": {
+     "n": 20,
+     "p50_ms": 27.3,
+     "p95_ms": 42.1
+    },
+    "medmcqa": {
+     "n": 20,
+     "p50_ms": 27.2,
+     "p95_ms": 514.0
+    },
+    "medqa_usmle": {
+     "n": 20,
+     "p50_ms": 28.3,
+     "p95_ms": 32.8
+    },
+    "mmlu_pro": {
+     "n": 20,
+     "p50_ms": 27.8,
+     "p95_ms": 30.5
+    },
+    "prompt_injections": {
+     "n": 16,
+     "p50_ms": 27.3,
+     "p95_ms": 27.5
+    },
+    "pubmedqa": {
+     "n": 20,
+     "p50_ms": 31.3,
+     "p95_ms": 33.0
+    },
+    "scienceqa_text": {
+     "n": 20,
+     "p50_ms": 27.3,
+     "p95_ms": 28.7
+    }
+   }
+  }
+ }
+}

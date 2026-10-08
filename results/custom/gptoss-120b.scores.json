@@ -1,0 +1,894 @@
+{
+  "run_id": "gptoss-120b",
+  "meta": {
+    "run_id": "gptoss-120b",
+    "system": "vllm:openai/gpt-oss-120b",
+    "template": "harmony",
+    "method": "next-token logprobs over option labels",
+    "top_k": 20,
+    "num_ctx": 8192,
+    "n_cases_total": 1200,
+    "one_question_per_request": true
+  },
+  "scored_at": "2026-10-07T18:26:56-0700",
+  "conventions": {
+    "brier": "mean_i sum_k (p_ik - y_ik)^2",
+    "ece_bins": 10,
+    "bootstrap_resamples": 2000,
+    "bootstrap_unit": "family_id",
+    "nll": "-log p(gold), zeros counted separately, clipped variant labelled",
+    "one_question_per_request": true
+  },
+  "slices": {
+    "ppt_density": {
+      "slice": "ppt_density",
+      "task_type": "score",
+      "n_cases": 80,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 80,
+        "exact_accuracy_rounded": 0.275,
+        "within_one_level": 0.8,
+        "mae_expected_level": 0.8498341859165605,
+        "mae_rounded": 0.925,
+        "ranked_probability_score": 0.2326890140462034,
+        "n_levels_observed": 4,
+        "note": "Levels are treated as equally spaced, which SST-5 does not guarantee."
+      },
+      "headline": {
+        "metric": "mae_expected_level",
+        "value": 0.8498341859165605,
+        "ci95_bootstrap_by_family": [
+          0.7243993551065445,
+          0.9739182609079597
+        ],
+        "n_families": 80
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 397.7069580000716,
+        "latency_ms_p95": 456.18189799984066,
+        "latency_ms_p99": 461.1783269999705,
+        "input_tokens_mean": 257.15,
+        "input_tokens_total": 20572,
+        "retries": 0
+      }
+    },
+    "ppt_layout": {
+      "slice": "ppt_layout",
+      "task_type": "choice",
+      "n_cases": 80,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 80,
+        "accuracy": 0.925,
+        "macro_f1": 0.926516290726817,
+        "n_classes_in_gold": 5,
+        "per_class": {
+          "chart": {
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.8571428571428571,
+            "support": 16
+          },
+          "image_with_caption": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          },
+          "title_bullets": {
+            "precision": 0.7272727272727273,
+            "recall": 1.0,
+            "f1": 0.8421052631578948,
+            "support": 16
+          },
+          "title_only": {
+            "precision": 1.0,
+            "recall": 0.875,
+            "f1": 0.9333333333333333,
+            "support": 16
+          },
+          "two_column": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          }
+        },
+        "brier_sum_convention": 0.149725439014674,
+        "nll_excluding_zero_gold": 0.31870482589935367,
+        "n_zero_probability_on_gold": 0,
+        "nll_clipped_1e-12": 0.31870482589935367,
+        "ece_10_bins": 0.06710637550030016,
+        "n_with_probabilities": 80
+      },
+      "headline": {
+        "metric": "accuracy",
+        "value": 0.925,
+        "ci95_bootstrap_by_family": [
+          0.8625,
+          0.975
+        ],
+        "n_families": 80
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 485.73421800006145,
+        "latency_ms_p95": 529.8081739999816,
+        "latency_ms_p99": 531.7125929998383,
+        "input_tokens_mean": 293.625,
+        "input_tokens_total": 23490,
+        "retries": 0
+      }
+    },
+    "ppt_needs_image": {
+      "slice": "ppt_needs_image",
+      "task_type": "noul",
+      "n_cases": 80,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 80,
+        "accuracy_at_0.5": 0.975,
+        "accuracy_if_polarity_flipped": 0.025,
+        "positive_class_precision": 0.9523809523809523,
+        "positive_class_recall": 1.0,
+        "positive_class_f1": 0.975609756097561,
+        "false_positive_rate": 0.05,
+        "confusion": {
+          "tp": 40,
+          "fp": 2,
+          "fn": 0,
+          "tn": 38
+        },
+        "brier": 0.021553540520578247,
+        "nll_excluding_zeros": 0.09591318618234466,
+        "n_zero_probability_on_gold": 0,
+        "ece_10_bins": 0.07905452002760513,
+        "auroc": 1.0,
+        "best_threshold_optimistic": 0.679,
+        "best_threshold_accuracy_optimistic": 0.9875,
+        "mean_p_true": 0.4877595158563337,
+        "base_rate_positive": 0.5
+      },
+      "headline": {
+        "metric": "accuracy",
+        "value": 0.975,
+        "ci95_bootstrap_by_family": [
+          0.9375,
+          1.0
+        ],
+        "n_families": 80
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 374.3745149999995,
+        "latency_ms_p95": 449.1730510001162,
+        "latency_ms_p99": 454.08882900005665,
+        "input_tokens_mean": 202.325,
+        "input_tokens_total": 16186,
+        "retries": 0
+      }
+    },
+    "ppt_split_slide": {
+      "slice": "ppt_split_slide",
+      "task_type": "noul",
+      "n_cases": 80,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 80,
+        "accuracy_at_0.5": 0.85,
+        "accuracy_if_polarity_flipped": 0.15,
+        "positive_class_precision": 0.7692307692307693,
+        "positive_class_recall": 1.0,
+        "positive_class_f1": 0.8695652173913044,
+        "false_positive_rate": 0.3,
+        "confusion": {
+          "tp": 40,
+          "fp": 12,
+          "fn": 0,
+          "tn": 28
+        },
+        "brier": 0.13569269205807638,
+        "nll_excluding_zeros": 0.43876689712790257,
+        "n_zero_probability_on_gold": 0,
+        "ece_10_bins": 0.1482368374435054,
+        "auroc": 0.9125,
+        "best_threshold_optimistic": 0.531,
+        "best_threshold_accuracy_optimistic": 0.8625,
+        "mean_p_true": 0.5543296288673416,
+        "base_rate_positive": 0.5
+      },
+      "headline": {
+        "metric": "accuracy",
+        "value": 0.85,
+        "ci95_bootstrap_by_family": [
+          0.7625,
+          0.925
+        ],
+        "n_families": 80
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 399.1467470000316,
+        "latency_ms_p95": 421.77145899995594,
+        "latency_ms_p99": 424.6773489999214,
+        "input_tokens_mean": 238.7625,
+        "input_tokens_total": 19101,
+        "retries": 0
+      }
+    },
+    "ppt_visual_type": {
+      "slice": "ppt_visual_type",
+      "task_type": "choice",
+      "n_cases": 80,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 80,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "n_classes_in_gold": 5,
+        "per_class": {
+          "bar_chart": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          },
+          "bullets": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          },
+          "line_chart": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          },
+          "pie_chart": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          },
+          "table": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          }
+        },
+        "brier_sum_convention": 0.002282719006521998,
+        "nll_excluding_zero_gold": 0.012125396916353857,
+        "n_zero_probability_on_gold": 0,
+        "nll_clipped_1e-12": 0.012125396916353857,
+        "ece_10_bins": 0.011435096432351775,
+        "n_with_probabilities": 80
+      },
+      "headline": {
+        "metric": "accuracy",
+        "value": 1.0,
+        "ci95_bootstrap_by_family": [
+          1.0,
+          1.0
+        ],
+        "n_families": 80
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 465.7450950001021,
+        "latency_ms_p95": 508.927771000117,
+        "latency_ms_p99": 512.5622299999577,
+        "input_tokens_mean": 251.0625,
+        "input_tokens_total": 20085,
+        "retries": 0
+      }
+    },
+    "state_access_request": {
+      "slice": "state_access_request",
+      "task_type": "noul",
+      "n_cases": 80,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 80,
+        "accuracy_at_0.5": 0.5875,
+        "accuracy_if_polarity_flipped": 0.4125,
+        "positive_class_precision": 1.0,
+        "positive_class_recall": 0.175,
+        "positive_class_f1": 0.2978723404255319,
+        "false_positive_rate": 0.0,
+        "confusion": {
+          "tp": 7,
+          "fp": 0,
+          "fn": 33,
+          "tn": 40
+        },
+        "brier": 0.27797362947918297,
+        "nll_excluding_zeros": 0.8499041465270162,
+        "n_zero_probability_on_gold": 0,
+        "ece_10_bins": 0.28140060098529956,
+        "auroc": 0.9184375,
+        "best_threshold_optimistic": 0.076,
+        "best_threshold_accuracy_optimistic": 0.85,
+        "mean_p_true": 0.1650259787722265,
+        "base_rate_positive": 0.5
+      },
+      "headline": {
+        "metric": "accuracy",
+        "value": 0.5875,
+        "ci95_bootstrap_by_family": [
+          0.475,
+          0.6875
+        ],
+        "n_families": 80
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 530.9773629999199,
+        "latency_ms_p95": 610.3709169999547,
+        "latency_ms_p99": 616.7376150001473,
+        "input_tokens_mean": 312.575,
+        "input_tokens_total": 25006,
+        "retries": 0
+      }
+    },
+    "state_agent_loop": {
+      "slice": "state_agent_loop",
+      "task_type": "noul",
+      "n_cases": 80,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 80,
+        "accuracy_at_0.5": 0.825,
+        "accuracy_if_polarity_flipped": 0.175,
+        "positive_class_precision": 1.0,
+        "positive_class_recall": 0.65,
+        "positive_class_f1": 0.787878787878788,
+        "false_positive_rate": 0.0,
+        "confusion": {
+          "tp": 26,
+          "fp": 0,
+          "fn": 14,
+          "tn": 40
+        },
+        "brier": 0.11270244114811893,
+        "nll_excluding_zeros": 0.3387047543456742,
+        "n_zero_probability_on_gold": 0,
+        "ece_10_bins": 0.08200744860926856,
+        "auroc": 1.0,
+        "best_threshold_optimistic": 0.119,
+        "best_threshold_accuracy_optimistic": 1.0,
+        "mean_p_true": 0.2922178439233918,
+        "base_rate_positive": 0.5
+      },
+      "headline": {
+        "metric": "accuracy",
+        "value": 0.825,
+        "ci95_bootstrap_by_family": [
+          0.75,
+          0.9
+        ],
+        "n_families": 80
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 242.58850000001075,
+        "latency_ms_p95": 318.5508840001603,
+        "latency_ms_p99": 322.02209299998685,
+        "input_tokens_mean": 320.25,
+        "input_tokens_total": 25620,
+        "retries": 0
+      }
+    },
+    "state_agent_next_tool": {
+      "slice": "state_agent_next_tool",
+      "task_type": "choice",
+      "n_cases": 80,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 80,
+        "accuracy": 0.9125,
+        "macro_f1": 0.9126271164453578,
+        "n_classes_in_gold": 7,
+        "per_class": {
+          "book_flight": {
+            "precision": 1.0,
+            "recall": 0.9,
+            "f1": 0.9473684210526316,
+            "support": 10
+          },
+          "check_health": {
+            "precision": 0.9230769230769231,
+            "recall": 1.0,
+            "f1": 0.9600000000000001,
+            "support": 12
+          },
+          "finish": {
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.8571428571428571,
+            "support": 12
+          },
+          "post_message": {
+            "precision": 0.8181818181818182,
+            "recall": 0.75,
+            "f1": 0.7826086956521738,
+            "support": 12
+          },
+          "query_issues": {
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888888888888889,
+            "support": 12
+          },
+          "restart_service": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 12
+          },
+          "search_flights": {
+            "precision": 0.9090909090909091,
+            "recall": 1.0,
+            "f1": 0.9523809523809523,
+            "support": 10
+          }
+        },
+        "brier_sum_convention": 0.10291732627227017,
+        "nll_excluding_zero_gold": 0.2081145577449754,
+        "n_zero_probability_on_gold": 0,
+        "nll_clipped_1e-12": 0.2081145577449754,
+        "ece_10_bins": 0.048394816081537936,
+        "n_with_probabilities": 80
+      },
+      "headline": {
+        "metric": "accuracy",
+        "value": 0.9125,
+        "ci95_bootstrap_by_family": [
+          0.85,
+          0.9625
+        ],
+        "n_families": 80
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 402.41279599990776,
+        "latency_ms_p95": 449.0286709999509,
+        "latency_ms_p99": 450.70181000005505,
+        "input_tokens_mean": 310.425,
+        "input_tokens_total": 24834,
+        "retries": 0
+      }
+    },
+    "state_api_retry": {
+      "slice": "state_api_retry",
+      "task_type": "noul",
+      "n_cases": 80,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 80,
+        "accuracy_at_0.5": 0.9375,
+        "accuracy_if_polarity_flipped": 0.0625,
+        "positive_class_precision": 1.0,
+        "positive_class_recall": 0.875,
+        "positive_class_f1": 0.9333333333333333,
+        "false_positive_rate": 0.0,
+        "confusion": {
+          "tp": 35,
+          "fp": 0,
+          "fn": 5,
+          "tn": 40
+        },
+        "brier": 0.05652400108059806,
+        "nll_excluding_zeros": 0.1998247299658855,
+        "n_zero_probability_on_gold": 0,
+        "ece_10_bins": 0.07878577841714693,
+        "auroc": 0.990625,
+        "best_threshold_optimistic": 0.223,
+        "best_threshold_accuracy_optimistic": 0.9375,
+        "mean_p_true": 0.4133460681768672,
+        "base_rate_positive": 0.5
+      },
+      "headline": {
+        "metric": "accuracy",
+        "value": 0.9375,
+        "ci95_bootstrap_by_family": [
+          0.875,
+          0.9875
+        ],
+        "n_families": 80
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 541.1834199999248,
+        "latency_ms_p95": 768.805324999903,
+        "latency_ms_p99": 771.539434000033,
+        "input_tokens_mean": 260.0375,
+        "input_tokens_total": 20803,
+        "retries": 0
+      }
+    },
+    "state_ci_failure": {
+      "slice": "state_ci_failure",
+      "task_type": "choice",
+      "n_cases": 80,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 80,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "n_classes_in_gold": 5,
+        "per_class": {
+          "build_error": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          },
+          "dependency_resolution": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          },
+          "infra_timeout": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          },
+          "lint": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          },
+          "test_failure": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          }
+        },
+        "brier_sum_convention": 0.00016795976355404033,
+        "nll_excluding_zero_gold": 0.003720289598275218,
+        "n_zero_probability_on_gold": 0,
+        "nll_clipped_1e-12": 0.003720289598275218,
+        "ece_10_bins": 0.00367512735682729,
+        "n_with_probabilities": 80
+      },
+      "headline": {
+        "metric": "accuracy",
+        "value": 1.0,
+        "ci95_bootstrap_by_family": [
+          1.0,
+          1.0
+        ],
+        "n_families": 80
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 663.0470699999478,
+        "latency_ms_p95": 870.3096909998749,
+        "latency_ms_p99": 873.6278689998471,
+        "input_tokens_mean": 408.625,
+        "input_tokens_total": 32690,
+        "retries": 0
+      }
+    },
+    "state_config_risk": {
+      "slice": "state_config_risk",
+      "task_type": "score",
+      "n_cases": 80,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 80,
+        "exact_accuracy_rounded": 0.4,
+        "within_one_level": 0.9125,
+        "mae_expected_level": 0.6503047059989833,
+        "mae_rounded": 0.6875,
+        "ranked_probability_score": 0.18402446898517483,
+        "n_levels_observed": 4,
+        "note": "Levels are treated as equally spaced, which SST-5 does not guarantee."
+      },
+      "headline": {
+        "metric": "mae_expected_level",
+        "value": 0.6503047059989833,
+        "ci95_bootstrap_by_family": [
+          0.5318859061913279,
+          0.7820006113965895
+        ],
+        "n_families": 80
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 381.240372999855,
+        "latency_ms_p95": 414.7885419999966,
+        "latency_ms_p99": 430.90898600007677,
+        "input_tokens_mean": 221.3625,
+        "input_tokens_total": 17709,
+        "retries": 0
+      }
+    },
+    "state_incident_severity": {
+      "slice": "state_incident_severity",
+      "task_type": "score",
+      "n_cases": 80,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 80,
+        "exact_accuracy_rounded": 0.525,
+        "within_one_level": 0.9375,
+        "mae_expected_level": 0.5441879275604161,
+        "mae_rounded": 0.5375,
+        "ranked_probability_score": 0.14044563080366604,
+        "n_levels_observed": 4,
+        "note": "Levels are treated as equally spaced, which SST-5 does not guarantee."
+      },
+      "headline": {
+        "metric": "mae_expected_level",
+        "value": 0.5441879275604161,
+        "ci95_bootstrap_by_family": [
+          0.43999096203618143,
+          0.6536669688788075
+        ],
+        "n_families": 80
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 458.44135700008337,
+        "latency_ms_p95": 506.2304519999543,
+        "latency_ms_p99": 507.9584610000438,
+        "input_tokens_mean": 249.8,
+        "input_tokens_total": 19984,
+        "retries": 0
+      }
+    },
+    "state_log_anomaly": {
+      "slice": "state_log_anomaly",
+      "task_type": "choice",
+      "n_cases": 80,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 80,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "n_classes_in_gold": 5,
+        "per_class": {
+          "auth_failure": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          },
+          "disk_full": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          },
+          "network": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          },
+          "none": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          },
+          "oom": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          }
+        },
+        "brier_sum_convention": 0.003096780016786336,
+        "nll_excluding_zero_gold": 0.00860043307430349,
+        "n_zero_probability_on_gold": 0,
+        "nll_clipped_1e-12": 0.00860043307430349,
+        "ece_10_bins": 0.007572949940684843,
+        "n_with_probabilities": 80
+      },
+      "headline": {
+        "metric": "accuracy",
+        "value": 1.0,
+        "ci95_bootstrap_by_family": [
+          1.0,
+          1.0
+        ],
+        "n_families": 80
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 507.8536210000948,
+        "latency_ms_p95": 586.0380149999855,
+        "latency_ms_p99": 587.5681249999616,
+        "input_tokens_mean": 270.0,
+        "input_tokens_total": 21600,
+        "retries": 0
+      }
+    },
+    "state_refund_eligibility": {
+      "slice": "state_refund_eligibility",
+      "task_type": "noul",
+      "n_cases": 80,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 80,
+        "accuracy_at_0.5": 0.5,
+        "accuracy_if_polarity_flipped": 0.5,
+        "positive_class_precision": 0.0,
+        "positive_class_recall": 0.0,
+        "positive_class_f1": 0.0,
+        "false_positive_rate": 0.0,
+        "confusion": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 40,
+          "tn": 40
+        },
+        "brier": 0.4860303604777595,
+        "nll_excluding_zeros": 2.229238569846452,
+        "n_zero_probability_on_gold": 0,
+        "ece_10_bins": 0.49115937919512054,
+        "auroc": 0.936875,
+        "best_threshold_optimistic": 0.006,
+        "best_threshold_accuracy_optimistic": 0.875,
+        "mean_p_true": 0.008840620804879486,
+        "base_rate_positive": 0.5
+      },
+      "headline": {
+        "metric": "accuracy",
+        "value": 0.5,
+        "ci95_bootstrap_by_family": [
+          0.4,
+          0.6
+        ],
+        "n_families": 80
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 524.0738950001287,
+        "latency_ms_p95": 540.6565309999678,
+        "latency_ms_p99": 540.8689999999297,
+        "input_tokens_mean": 278.425,
+        "input_tokens_total": 22274,
+        "retries": 0
+      }
+    },
+    "state_ticket_routing": {
+      "slice": "state_ticket_routing",
+      "task_type": "choice",
+      "n_cases": 80,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 80,
+        "accuracy": 0.725,
+        "macro_f1": 0.665203830369357,
+        "n_classes_in_gold": 5,
+        "per_class": {
+          "account_team": {
+            "precision": 0.5925925925925926,
+            "recall": 1.0,
+            "f1": 0.7441860465116279,
+            "support": 16
+          },
+          "billing": {
+            "precision": 1.0,
+            "recall": 0.5625,
+            "f1": 0.72,
+            "support": 16
+          },
+          "security": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 16
+          },
+          "self_serve": {
+            "precision": 0.5925925925925926,
+            "recall": 1.0,
+            "f1": 0.7441860465116279,
+            "support": 16
+          },
+          "support_engineering": {
+            "precision": 1.0,
+            "recall": 0.0625,
+            "f1": 0.11764705882352941,
+            "support": 16
+          }
+        },
+        "brier_sum_convention": 0.5204466721724132,
+        "nll_excluding_zero_gold": 1.4768452852807223,
+        "n_zero_probability_on_gold": 0,
+        "nll_clipped_1e-12": 1.4768452852807223,
+        "ece_10_bins": 0.25371878258989083,
+        "n_with_probabilities": 80
+      },
+      "headline": {
+        "metric": "accuracy",
+        "value": 0.725,
+        "ci95_bootstrap_by_family": [
+          0.625,
+          0.8125
+        ],
+        "n_families": 80
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 451.2818600001083,
+        "latency_ms_p95": 478.35637100001804,
+        "latency_ms_p99": 479.8056509998787,
+        "input_tokens_mean": 230.5875,
+        "input_tokens_total": 18447,
+        "retries": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+19:24:45 NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887 MiB
+19:24:46 setup done, model downloaded in 0s, pilot-2 adapter present: True
+19:25:21 canary: HF vs saved vLLM agreement 0.965 on 200/200 cases (need 0.93) -> PASS
+19:30:42 vLLM ready in 321s (), all 0 adapters answer
+19:40:17 relabel: 90400/90400 core rows labelled with <bos> (exit 0)
+19:41:04 targets: exit 0; synthetic: 986 families, kept 11312 rows, dropped 265 without generator/teacher consensus | total 90135 targets -> data/train/targets_bos_core.jsonl; 0 rows had no teacher label and were skipped
+19:41:05 training file: 101470 rows
+22:02:55 full run exit 0, snapshots ['step-500', 'step-1000', 'step-1500', 'step-2000', 'step-2500', 'last']
+22:04:08 vLLM ready in 73s (--max-loras 1 --max-cpu-loras 7), all 7 adapters answer
+22:04:18 final dev jevbench_dev: untuned exit 0
+22:04:36 final dev jevbench_dev: F-step-500 exit 0
+22:04:47 final dev jevbench_dev: F-step-1000 exit 0
+22:04:57 final dev jevbench_dev: F-step-1500 exit 0
+22:05:09 final dev jevbench_dev: F-step-2000 exit 0
+22:05:19 final dev jevbench_dev: F-step-2500 exit 0
+22:05:30 final dev jevbench_dev: F-last exit 0
+22:05:41 final dev jevbench_dev: pilot2 exit 0
+22:05:56 final dev custom_dev2: untuned exit 0
+22:06:13 final dev custom_dev2: F-step-500 exit 0
+22:06:30 final dev custom_dev2: F-step-1000 exit 0
+22:06:47 final dev custom_dev2: F-step-1500 exit 0
+22:07:04 final dev custom_dev2: F-step-2000 exit 0
+22:07:21 final dev custom_dev2: F-step-2500 exit 0
+22:07:38 final dev custom_dev2: F-last exit 0
+22:07:55 final dev custom_dev2: pilot2 exit 0
+22:08:02 final: vLLM canary (pilot 2 after adapter swapping) agreement 0.980 on 200/200 -> PASS
+22:08:13 final: untuned dev jev 0.801 custom 0.935 (vllm)
+22:08:13 final F-step-500     jev_dev 0.800 coverage 1.00 custom change -0.11 pts (-30/+28) eligible
+22:08:13 final F-step-1000    jev_dev 0.805 coverage 1.00 custom change +1.40 pts (-20/+46) eligible
+22:08:13 final F-step-1500    jev_dev 0.834 coverage 1.00 custom change +2.81 pts (-1/+53) eligible
+22:08:13 final F-step-2000    jev_dev 0.807 coverage 1.00 custom change +1.62 pts (-10/+40) eligible
+22:08:13 final F-step-2500    jev_dev 0.817 coverage 1.00 custom change +1.73 pts (-6/+38) eligible
+22:08:13 final F-last         jev_dev 0.823 coverage 1.00 custom change +1.57 pts (-4/+33) eligible
+22:08:13 reference pilot2 jev_dev 0.818 custom change -1.73 pts (not a candidate)
+22:08:13 chosen snapshot: F-step-1500
+22:09:14 vLLM ready in 60s (--max-loras 1 --max-cpu-loras 2), all 2 adapters answer
+22:09:18 test: vLLM canary (pilot 2 after adapter swapping) agreement 0.980 on 200/200 -> PASS
+22:09:44 TEST jevbench exit 0
+22:09:52 TEST custom exit 0
+22:10:03 TEST jevbench raw acc 0.808, custom raw acc 0.971, custom vs untuned -2/+24 p=0.000, custom change +2.29 pts, within 1.5-point margin: True

@@ -1,0 +1,6 @@
+# Optional local hooks: `uvx pre-commit install`. Mirrors the CI lint job (formatting is not enforced).
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.10
+    hooks:
+      - id: ruff-check

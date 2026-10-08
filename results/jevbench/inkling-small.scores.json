@@ -1,0 +1,126 @@
+{
+  "run_id": "inkling-small",
+  "meta": {
+    "run_id": "inkling-small",
+    "system": "openrouter:thinkingmachines/inkling-small",
+    "method": "single answer at temperature 0, reasoning off (no logprobs; accuracy only)",
+    "n_cases_total": 1700
+  },
+  "scored_at": "2026-10-07T18:26:53-0700",
+  "conventions": {
+    "brier": "mean_i sum_k (p_ik - y_ik)^2",
+    "ece_bins": 10,
+    "bootstrap_resamples": 2000,
+    "bootstrap_unit": "family_id",
+    "nll": "-log p(gold), zeros counted separately, clipped variant labelled",
+    "one_question_per_request": true
+  },
+  "slices": {
+    "aegis2": {
+      "slice": "aegis2",
+      "task_type": "noul",
+      "n_cases": 100,
+      "n_errors": 0,
+      "n_parse_errors": 0,
+      "coverage": 1.0,
+      "n_truncated_states": 0,
+      "error_examples": [],
+      "metrics": {
+        "n_scored": 100,
+        "accuracy_at_0.5": 0.8,
+        "accuracy_if_polarity_flipped": 0.2,
+        "positive_class_precision": 0.8809523809523809,
+        "positive_class_recall": 0.7115384615384616,
+        "positive_class_f1": 0.7872340425531914,
+        "false_positive_rate": 0.10416666666666667,
+        "confusion": {
+          "tp": 37,
+          "fp": 5,
+          "fn": 15,
+          "tn": 43
+        },
+        "brier": 0.2,
+        "nll_excluding_zeros": 0.0,
+        "n_zero_probability_on_gold": 20,
+        "ece_10_bins": 0.19999999999999996,
+        "auroc": 0.8036858974358975,
+        "best_threshold_optimistic": 0.5,
+        "best_threshold_accuracy_optimistic": 0.8,
+        "mean_p_true": 0.42,
+        "base_rate_positive": 0.52
+      },
+      "headline": {
+        "metric": "accuracy",
+        "value": 0.8,
+        "ci95_bootstrap_by_family": [
+          0.72,
+          0.88
+        ],
+        "n_families": 100
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 392.68608298152685,
+        "latency_ms_p95": 615.1149169891141,
+        "latency_ms_p99": 1509.0037080226466,
+        "input_tokens_mean": null,
+        "input_tokens_total": null,
+        "retries": 0
+      }
+    },
+    "aegis2_response": {
+      "slice": "aegis2_response",
+      "task_type": "noul",
+      "n_cases": 20,
+      "n_errors": 6,
+      "n_parse_errors": 0,
+      "coverage": 0.7,
+      "n_truncated_states": 0,
+      "error_examples": [
+        "RuntimeError('no answer within 60s')"
+      ],
+      "metrics": {
+        "n_scored": 14,
+        "accuracy_at_0.5": 0.7142857142857143,
+        "accuracy_if_polarity_flipped": 0.2857142857142857,
+        "positive_class_precision": 1.0,
+        "positive_class_recall": 0.6666666666666666,
+        "positive_class_f1": 0.8,
+        "false_positive_rate": 0.0,
+        "confusion": {
+          "tp": 8,
+          "fp": 0,
+          "fn": 4,
+          "tn": 2
+        },
+        "brier": 0.2857142857142857,
+        "nll_excluding_zeros": 0.0,
+        "n_zero_probability_on_gold": 4,
+        "ece_10_bins": 0.2857142857142857,
+        "auroc": 0.8333333333333334,
+        "best_threshold_optimistic": 0.0,
+        "best_threshold_accuracy_optimistic": 0.8571428571428571,
+        "mean_p_true": 0.5714285714285714,
+        "base_rate_positive": 0.8571428571428571
+      },
+      "headline": {
+        "metric": "accuracy",
+        "value": 0.7142857142857143,
+        "ci95_bootstrap_by_family": [
+          0.5,
+          0.9285714285714286
+        ],
+        "n_families": 14
+      },
+      "position_bias": null,
+      "runtime": {
+        "latency_ms_p50": 1769.0603749942966,
+        "latency_ms_p95": 155069.876249996,
+        "latency_ms_p99": 155069.876249996,
+        "input_tokens_mean": null,
+        "input_tokens_total": null,
+        "retries": 0
+      }
+    }
+  }
+}

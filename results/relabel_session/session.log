@@ -1,0 +1,7 @@
+00:15:03 NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887 MiB
+00:17:50 model downloaded in 165s
+00:23:40 vLLM ready in 330s
+00:32:56 label: 90400/90400 core rows labelled with <bos> in 9.3 min (exit 0)
+00:33:43 targets: exit 0; synthetic: 986 families, kept 11311 rows, dropped 266 without generator/teacher consensus | total 90134 targets -> data/train/targets_bos_core.jsonl; 0 rows had no teacher label and were skipped
+00:33:44 reproducibility: 1190 families compared, largest agreement difference 0.2860; rows {'training': 101469, 'core': 90134}
+00:33:44 RELABEL DONE

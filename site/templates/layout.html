@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>$title</title>
+<meta name="description" content="$description">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">s1</span><span>s1 decision model</span></a>
+    <nav aria-label="Main">
+      <a href="index.html"$nav_index>Overview</a>
+      <a href="leaderboard.html"$nav_leaderboard>Leaderboard</a>
+      <a href="$methodology">Methodology</a>
+      <a href="$hf_model">Model</a>
+      <a href="$github">GitHub</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+$content
+</main>
+<footer class="footer">
+  <div class="wrap">
+    <p>s1 is released under the <a href="$license">Apache-2.0 licence</a>. Source, data lineage and evaluation code: <a href="$github">github.com/j-raghavan/s1-decision-model</a>.</p>
+    <p>s1 is an independent project. It is not affiliated with, endorsed by or sponsored by TypeSafe AI or the authors of JevBench. Jev 1.13 figures are computed from the predictions published with the JevBench dataset.</p>
+  </div>
+</footer>
+</body>
+</html>

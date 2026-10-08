@@ -1,0 +1,5 @@
+05:00:59 NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887 MiB
+05:03:48 setup done, model downloaded in 167s, pilot-2 adapter present: True
+05:04:33 canary: HF vs saved vLLM agreement 0.965 on 200/200 cases (need 0.93) -> PASS
+05:05:16 positive control: pilot 2 on custom_dev -6/+5, rule net loss 1 (cap 3.2) -> NOT flagged
+05:05:16 STOPPED: the dev set does not flag pilot 2's known regression; nothing trained

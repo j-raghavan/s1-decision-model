@@ -1,0 +1,21 @@
+{
+  "fitted_on": [
+    "jevbench_dev:s1-int4-ollama",
+    "custom_dev2:s1-int4-ollama"
+  ],
+  "n": {
+    "choice": 1383,
+    "score": 540,
+    "noul": 1183
+  },
+  "choice": {
+    "temperature": 1.2351448639672913
+  },
+  "score": {
+    "temperature": 0.8973509340079596
+  },
+  "noul": {
+    "a": 0.8443780487048281,
+    "b": 0.7510648371221847
+  }
+}

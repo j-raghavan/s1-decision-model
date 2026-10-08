@@ -1,0 +1,42 @@
+{
+ "quickstart_script": {
+  "exit": 0,
+  "output": [
+   "Loading weights:  61%|\u2588\u2588\u2588\u2588\u2588\u2588    | 616/1013 [00:03<00:02, 188.61it/s]",
+   "Loading weights:  63%|\u2588\u2588\u2588\u2588\u2588\u2588\u258e   | 638/1013 [00:03<00:01, 187.75it/s]",
+   "Loading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1013/1013 [00:03<00:00, 276.42it/s]",
+   "team: billing (1.00)  {\"billing\": 0.998, \"shipping\": 0.001, \"tech\": 0.001}",
+   "urgent: true (0.95)  {\"true\": 0.947, \"false\": 0.053}",
+   "severity: 1 (0.43)  {\"0\": 0.084, \"1\": 0.425, \"2\": 0.425, \"3\": 0.065}"
+  ]
+ },
+ "model_card_snippet": {
+  "exit": 0,
+  "output": [
+   "Loading weights:  59%|\u2588\u2588\u2588\u2588\u2588\u258a    | 594/1013 [00:03<00:02, 188.21it/s]",
+   "Loading weights:  61%|\u2588\u2588\u2588\u2588\u2588\u2588    | 616/1013 [00:03<00:02, 188.36it/s]",
+   "Loading weights:  63%|\u2588\u2588\u2588\u2588\u2588\u2588\u258e   | 638/1013 [00:03<00:01, 187.96it/s]",
+   "Loading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589| 1011/1013 [00:03<00:00, 1137.55it/s]",
+   "Loading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1013/1013 [00:03<00:00, 277.15it/s] ",
+   "{'billing': 0.9980586171150208, 'shipping': 0.0010312916710972786, 'tech': 0.000910111702978611}"
+  ]
+ },
+ "agreement": {
+  "cases": 177,
+  "same_top_as_repo_batch8": 0.9718,
+  "batch8_disagreements": 5,
+  "of_which_match_repo_single": 5,
+  "same_top_as_repo_unbatched": 1.0,
+  "max_probability_difference_vs_batch8": 0.12493,
+  "cases_with_saved_vllm": 177,
+  "same_top_as_saved_bf16_vllm": 0.9718,
+  "accuracy_quickstart": 0.791,
+  "accuracy_repo_batch8": 0.7797,
+  "seconds_per_decision_hf": 0.103,
+  "required": {
+   "repo_unbatched": 0.99,
+   "saved_vllm": 0.95
+  },
+  "pass": true
+ }
+}

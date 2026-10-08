@@ -1,0 +1,35 @@
+{
+ "canary": {
+  "exit": 0,
+  "agreement": 0.965,
+  "cases": 200,
+  "expected_cases": 200,
+  "required": 0.93,
+  "pass": true
+ },
+ "positive_control": {
+  "exits": [
+   0,
+   0
+  ],
+  "base_complete": true,
+  "flagged": false,
+  "pilot2_vs_untuned": {
+   "overall": {
+    "n": 377,
+    "newly_wrong": 6,
+    "newly_right": 5,
+    "p": 1.0
+   },
+   "rule": {
+    "n": 160,
+    "newly_wrong": 6,
+    "newly_right": 5,
+    "p": 1.0
+   },
+   "rule_net_loss": 1,
+   "rule_cap": 3.2,
+   "regresses": false
+  }
+ }
+}

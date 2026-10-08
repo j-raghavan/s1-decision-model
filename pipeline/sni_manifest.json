@@ -1,0 +1,2214 @@
+{
+ "collection": "Super-NaturalInstructions (allenai/natural-instructions, Apache-2.0)",
+ "filters": [
+  "English input, output and instruction",
+  "2-20 distinct answers (decision tasks)",
+  "instance license permissive (no NC, no Unknown, no dataset-specific terms)",
+  "no source shared with the eval sets",
+  "no source excluded by the project's provenance policy (excluded sources listed below)"
+ ],
+ "excluded_sources": {
+  "pubmed_qa": "eval overlap (PubMedQA is a JevBench slice)",
+  "winowhy": "excluded by the provenance policy",
+  "semeval_2020_task4": "excluded by the provenance policy"
+ },
+ "excluded_tasks": [
+  "task133_winowhy_reason_plausibility_detection.json",
+  "task136_winowhy_knowledge_categorization.json",
+  "task291_semeval_2020_task4_commonsense_validation.json",
+  "task295_semeval_2020_task4_commonsense_reasoning.json",
+  "task846_pubmedqa_classification.json",
+  "task848_pubmedqa_classification.json"
+ ],
+ "tasks": [
+  {
+   "file": "task022_cosmosqa_passage_inappropriate_binary.json",
+   "source": [
+    "cosmosqa"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 129
+  },
+  {
+   "file": "task027_drop_answer_type_generation.json",
+   "source": [
+    "drop"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 3,
+   "instances": 4174
+  },
+  {
+   "file": "task065_timetravel_consistent_sentence_classification.json",
+   "source": [
+    "timetravel"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task066_timetravel_binary_consistency_classification.json",
+   "source": [
+    "timetravel"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task082_babi_t1_single_supporting_fact_question_generation.json",
+   "source": [
+    "babi"
+   ],
+   "license": [
+    "CC BY 3.0"
+   ],
+   "labels": 4,
+   "instances": 992
+  },
+  {
+   "file": "task083_babi_t1_single_supporting_fact_answer_generation.json",
+   "source": [
+    "babi"
+   ],
+   "license": [
+    "CC BY 3.0"
+   ],
+   "labels": 6,
+   "instances": 992
+  },
+  {
+   "file": "task084_babi_t1_single_supporting_fact_identify_relevant_fact.json",
+   "source": [
+    "babi"
+   ],
+   "license": [
+    "CC BY 3.0"
+   ],
+   "labels": 10,
+   "instances": 991
+  },
+  {
+   "file": "task106_scruples_ethical_judgment.json",
+   "source": [
+    "scruples"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 5997
+  },
+  {
+   "file": "task108_contextualabusedetection_classification.json",
+   "source": [
+    "cad"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 3996
+  },
+  {
+   "file": "task112_asset_simple_sentence_identification.json",
+   "source": [
+    "asset"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task1135_xcsr_en_commonsense_mc_classification.json",
+   "source": [
+    "x_csr"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 5,
+   "instances": 993
+  },
+  {
+   "file": "task114_is_the_given_word_longest.json",
+   "source": [
+    "x_csr"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task1152_bard_analogical_reasoning_causation.json",
+   "source": [
+    "bard"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 15,
+   "instances": 204
+  },
+  {
+   "file": "task1154_bard_analogical_reasoning_travel.json",
+   "source": [
+    "bard"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 12,
+   "instances": 804
+  },
+  {
+   "file": "task1155_bard_analogical_reasoning_trash_or_treasure.json",
+   "source": [
+    "bard"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 546
+  },
+  {
+   "file": "task1157_bard_analogical_reasoning_rooms_for_containers.json",
+   "source": [
+    "bard"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 12,
+   "instances": 967
+  },
+  {
+   "file": "task1158_bard_analogical_reasoning_manipulating_items.json",
+   "source": [
+    "bard"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 10,
+   "instances": 376
+  },
+  {
+   "file": "task1159_bard_analogical_reasoning_containers.json",
+   "source": [
+    "bard"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 14,
+   "instances": 698
+  },
+  {
+   "file": "task115_help_advice_classification.json",
+   "source": [
+    "help!_need_advice_on_identifying_advice"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 5745
+  },
+  {
+   "file": "task1196_atomic_classification_oeffect.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6493
+  },
+  {
+   "file": "task1197_atomic_classification_oreact.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6493
+  },
+  {
+   "file": "task1198_atomic_classification_owant.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6493
+  },
+  {
+   "file": "task1199_atomic_classification_xattr.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6494
+  },
+  {
+   "file": "task1200_atomic_classification_xeffect.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6493
+  },
+  {
+   "file": "task1201_atomic_classification_xintent.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6494
+  },
+  {
+   "file": "task1202_atomic_classification_xneed.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6493
+  },
+  {
+   "file": "task1203_atomic_classification_xreact.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6494
+  },
+  {
+   "file": "task1204_atomic_classification_hinderedby.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6491
+  },
+  {
+   "file": "task1205_atomic_classification_isafter.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6493
+  },
+  {
+   "file": "task1206_atomic_classification_isbefore.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6494
+  },
+  {
+   "file": "task1207_atomic_classification_atlocation.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6493
+  },
+  {
+   "file": "task1208_atomic_classification_xreason.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 732
+  },
+  {
+   "file": "task1209_atomic_classification_objectuse.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6494
+  },
+  {
+   "file": "task1210_atomic_classification_madeupof.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 5299
+  },
+  {
+   "file": "task1211_atomic_classification_hassubevent.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6494
+  },
+  {
+   "file": "task1212_atomic_classification_hasproperty.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6494
+  },
+  {
+   "file": "task1213_atomic_classification_desires.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 5199
+  },
+  {
+   "file": "task1214_atomic_classification_xwant.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6493
+  },
+  {
+   "file": "task1215_atomic_classification_capableof.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6492
+  },
+  {
+   "file": "task1216_atomic_classification_causes.json",
+   "source": [
+    "atomic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 699
+  },
+  {
+   "file": "task1285_kpa_keypoint_matching.json",
+   "source": [
+    "argkp"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task1297_qasc_question_answering.json",
+   "source": [
+    "qasc"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 8,
+   "instances": 6494
+  },
+  {
+   "file": "task1321_country_continent.json",
+   "source": [
+    "country_continent_dataset"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 7,
+   "instances": 237
+  },
+  {
+   "file": "task1359_numer_sense_answer_generation.json",
+   "source": [
+    "numersense"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 12,
+   "instances": 5969
+  },
+  {
+   "file": "task1360_numer_sense_multiple_choice_qa_generation.json",
+   "source": [
+    "numersense"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 4,
+   "instances": 6232
+  },
+  {
+   "file": "task1366_healthfact_classification.json",
+   "source": [
+    "health_fact"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 3,
+   "instances": 245
+  },
+  {
+   "file": "task1380_quarel_correct_option_generation.json",
+   "source": [
+    "quarel"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 798
+  },
+  {
+   "file": "task1381_quarel_incorrect_option_generation.json",
+   "source": [
+    "quarel"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 798
+  },
+  {
+   "file": "task1388_cb_entailment.json",
+   "source": [
+    "cb"
+   ],
+   "license": [
+    "CC BY-SA 3.0"
+   ],
+   "labels": 3,
+   "instances": 301
+  },
+  {
+   "file": "task1389_hellaswag_completion.json",
+   "source": [
+    "hellaswag"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 4,
+   "instances": 6494
+  },
+  {
+   "file": "task1390_wscfixed_coreference.json",
+   "source": [
+    "wsc_fiexed"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 648
+  },
+  {
+   "file": "task1391_winogrande_easy_answer_generation.json",
+   "source": [
+    "winogrande"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 6491
+  },
+  {
+   "file": "task1418_bless_semantic_relation_classification.json",
+   "source": [
+    "bless"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 6,
+   "instances": 2345
+  },
+  {
+   "file": "task1419_mathqa_gain.json",
+   "source": [
+    "mathqa"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 5,
+   "instances": 6417
+  },
+  {
+   "file": "task1420_mathqa_general.json",
+   "source": [
+    "mathqa"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 5,
+   "instances": 6452
+  },
+  {
+   "file": "task1421_mathqa_other.json",
+   "source": [
+    "mathqa"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 5,
+   "instances": 2270
+  },
+  {
+   "file": "task1422_mathqa_physics.json",
+   "source": [
+    "mathqa"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 5,
+   "instances": 6423
+  },
+  {
+   "file": "task1423_mathqa_geometry.json",
+   "source": [
+    "mathqa"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 5,
+   "instances": 2621
+  },
+  {
+   "file": "task1424_mathqa_probability.json",
+   "source": [
+    "mathqa"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 5,
+   "instances": 572
+  },
+  {
+   "file": "task1431_head_qa_answer_generation.json",
+   "source": [
+    "head_qa"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 5,
+   "instances": 2529
+  },
+  {
+   "file": "task1434_head_qa_classification.json",
+   "source": [
+    "head_qa"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 6,
+   "instances": 2528
+  },
+  {
+   "file": "task1439_doqa_cooking_isanswerable.json",
+   "source": [
+    "doqa"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 2,
+   "instances": 2530
+  },
+  {
+   "file": "task1442_doqa_movies_isanswerable.json",
+   "source": [
+    "doqa"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 2,
+   "instances": 1879
+  },
+  {
+   "file": "task1502_hatexplain_classification.json",
+   "source": [
+    "hatexplain"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 3,
+   "instances": 5527
+  },
+  {
+   "file": "task1503_hatexplain_classification.json",
+   "source": [
+    "hatexplain"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 10,
+   "instances": 898
+  },
+  {
+   "file": "task1517_limit_classfication.json",
+   "source": [
+    "limit"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 2,
+   "instances": 1996
+  },
+  {
+   "file": "task1529_scitail1.1_classification.json",
+   "source": [
+    "scitailv1.1"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 5060
+  },
+  {
+   "file": "task1548_wiqa_binary_classification.json",
+   "source": [
+    "wiqa"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 592
+  },
+  {
+   "file": "task1549_wiqa_answer_generation_missing_step.json",
+   "source": [
+    "wiqa"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 9,
+   "instances": 92
+  },
+  {
+   "file": "task1554_scitail_classification.json",
+   "source": [
+    "scitail"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 6495
+  },
+  {
+   "file": "task1565_triviaqa_classification.json",
+   "source": [
+    "triviaqa"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 108
+  },
+  {
+   "file": "task1568_propara_classification.json",
+   "source": [
+    "propara"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 3,
+   "instances": 162
+  },
+  {
+   "file": "task1583_bless_meronym_classification.json",
+   "source": [
+    "bless"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 1481
+  },
+  {
+   "file": "task1599_smcalflow_classification.json",
+   "source": [
+    "smcalflow"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 2,
+   "instances": 3810
+  },
+  {
+   "file": "task1623_disfl_qa_disfluent_question_classification.json",
+   "source": [
+    "disfl_qa"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 1480
+  },
+  {
+   "file": "task1624_disfl_qa_question_yesno_classification.json",
+   "source": [
+    "disfl_qa"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 1500
+  },
+  {
+   "file": "task1630_openpi_classification.json",
+   "source": [
+    "open_pi"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 5,
+   "instances": 797
+  },
+  {
+   "file": "task1640_aqa1.0_answerable_unanswerable_question_classification.json",
+   "source": [
+    "adversarial_qa"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 2648
+  },
+  {
+   "file": "task1661_super_glue_classification.json",
+   "source": [
+    "boolq"
+   ],
+   "license": [
+    "CC BY-SA 3.0"
+   ],
+   "labels": 2,
+   "instances": 4000
+  },
+  {
+   "file": "task1678_mathqa_answer_selection.json",
+   "source": [
+    "math_qa"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 5,
+   "instances": 4471
+  },
+  {
+   "file": "task1727_wiqa_what_is_the_effect.json",
+   "source": [
+    "wiqa"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 3,
+   "instances": 6497
+  },
+  {
+   "file": "task190_snli_classification.json",
+   "source": [
+    "snli"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task197_mnli_domain_answer_generation.json",
+   "source": [
+    "multinli"
+   ],
+   "license": [
+    "OANC"
+   ],
+   "labels": 5,
+   "instances": 6500
+  },
+  {
+   "file": "task198_mnli_domain_classification.json",
+   "source": [
+    "multinli"
+   ],
+   "license": [
+    "OANC"
+   ],
+   "labels": 5,
+   "instances": 6500
+  },
+  {
+   "file": "task199_mnli_classification.json",
+   "source": [
+    "multinli"
+   ],
+   "license": [
+    "OANC"
+   ],
+   "labels": 2,
+   "instances": 6499
+  },
+  {
+   "file": "task200_mnli_entailment_classification.json",
+   "source": [
+    "multinli"
+   ],
+   "license": [
+    "OANC"
+   ],
+   "labels": 3,
+   "instances": 4464
+  },
+  {
+   "file": "task201_mnli_neutral_classification.json",
+   "source": [
+    "multinli"
+   ],
+   "license": [
+    "OANC"
+   ],
+   "labels": 3,
+   "instances": 6500
+  },
+  {
+   "file": "task202_mnli_contradiction_classification.json",
+   "source": [
+    "multinli"
+   ],
+   "license": [
+    "OANC"
+   ],
+   "labels": 3,
+   "instances": 6498
+  },
+  {
+   "file": "task204_mnli_same_genre_classification.json",
+   "source": [
+    "multinli"
+   ],
+   "license": [
+    "OANC"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task211_logic2text_classification.json",
+   "source": [
+    "logic2text"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 6000
+  },
+  {
+   "file": "task212_logic2text_classification.json",
+   "source": [
+    "logic2text"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 7,
+   "instances": 6498
+  },
+  {
+   "file": "task224_scruples_anecdotes_ethical_judgment.json",
+   "source": [
+    "scruples"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 2053
+  },
+  {
+   "file": "task228_arc_answer_generation_easy.json",
+   "source": [
+    "arc"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 4,
+   "instances": 5193
+  },
+  {
+   "file": "task229_arc_answer_generation_hard.json",
+   "source": [
+    "arc"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 4,
+   "instances": 2589
+  },
+  {
+   "file": "task230_iirc_passage_classification.json",
+   "source": [
+    "iirc"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 3,
+   "instances": 6500
+  },
+  {
+   "file": "task231_iirc_link_classification.json",
+   "source": [
+    "iirc"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 4,
+   "instances": 6500
+  },
+  {
+   "file": "task232_iirc_link_number_classification.json",
+   "source": [
+    "iirc"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task233_iirc_link_exists_classification.json",
+   "source": [
+    "iirc"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 6499
+  },
+  {
+   "file": "task241_tweetqa_classification.json",
+   "source": [
+    "tweetqa"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 2,
+   "instances": 5995
+  },
+  {
+   "file": "task242_tweetqa_classification.json",
+   "source": [
+    "tweetqa"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 2,
+   "instances": 5994
+  },
+  {
+   "file": "task268_casehold_legal_answer_generation.json",
+   "source": [
+    "casehold"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 5,
+   "instances": 6499
+  },
+  {
+   "file": "task274_overruling_legal_classification.json",
+   "source": [
+    "overruling"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 2395
+  },
+  {
+   "file": "task276_enhanced_wsc_classification.json",
+   "source": [
+    "wsc; enhanced_wsc"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 6,
+   "instances": 1458
+  },
+  {
+   "file": "task279_stereoset_classification_stereotype.json",
+   "source": [
+    "stereoset"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 3,
+   "instances": 6490
+  },
+  {
+   "file": "task280_stereoset_classification_stereotype_type.json",
+   "source": [
+    "stereoset"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 4,
+   "instances": 3708
+  },
+  {
+   "file": "task282_scruples_event_time.json",
+   "source": [
+    "scruples"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 1113
+  },
+  {
+   "file": "task289_gigaword_summarization.json",
+   "source": [
+    "gigaword"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 6499
+  },
+  {
+   "file": "task316_crows-pairs_classification_stereotype.json",
+   "source": [
+    "crows_pairs"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 2,
+   "instances": 3009
+  },
+  {
+   "file": "task317_crows-pairs_classification_stereotype_type.json",
+   "source": [
+    "crows_pairs"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 9,
+   "instances": 1500
+  },
+  {
+   "file": "task318_stereoset_classification_gender.json",
+   "source": [
+    "stereoset"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 3,
+   "instances": 723
+  },
+  {
+   "file": "task319_stereoset_classification_profession.json",
+   "source": [
+    "stereoset"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 3,
+   "instances": 2476
+  },
+  {
+   "file": "task320_stereoset_classification_race.json",
+   "source": [
+    "stereoset"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 3,
+   "instances": 2925
+  },
+  {
+   "file": "task321_stereoset_classification_religion.json",
+   "source": [
+    "stereoset"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 3,
+   "instances": 228
+  },
+  {
+   "file": "task322_jigsaw_classification_threat.json",
+   "source": [
+    "jigsaw"
+   ],
+   "license": [
+    "CC0: Public Domain"
+   ],
+   "labels": 2,
+   "instances": 6385
+  },
+  {
+   "file": "task323_jigsaw_classification_sexually_explicit.json",
+   "source": [
+    "jigsaw"
+   ],
+   "license": [
+    "CC0: Public Domain"
+   ],
+   "labels": 2,
+   "instances": 6369
+  },
+  {
+   "file": "task324_jigsaw_classification_disagree.json",
+   "source": [
+    "jigsaw"
+   ],
+   "license": [
+    "CC0: Public Domain"
+   ],
+   "labels": 2,
+   "instances": 388
+  },
+  {
+   "file": "task325_jigsaw_classification_identity_attack.json",
+   "source": [
+    "jigsaw"
+   ],
+   "license": [
+    "CC0: Public Domain"
+   ],
+   "labels": 2,
+   "instances": 6356
+  },
+  {
+   "file": "task326_jigsaw_classification_obscene.json",
+   "source": [
+    "jigsaw"
+   ],
+   "license": [
+    "CC0: Public Domain"
+   ],
+   "labels": 2,
+   "instances": 6384
+  },
+  {
+   "file": "task327_jigsaw_classification_toxic.json",
+   "source": [
+    "jigsaw"
+   ],
+   "license": [
+    "CC0: Public Domain"
+   ],
+   "labels": 2,
+   "instances": 5565
+  },
+  {
+   "file": "task328_jigsaw_classification_insult.json",
+   "source": [
+    "jigsaw"
+   ],
+   "license": [
+    "CC0: Public Domain"
+   ],
+   "labels": 2,
+   "instances": 6213
+  },
+  {
+   "file": "task329_gap_classification.json",
+   "source": [
+    "gap"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 3,
+   "instances": 4449
+  },
+  {
+   "file": "task340_winomt_classification_gender_pro.json",
+   "source": [
+    "winomt"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 1576
+  },
+  {
+   "file": "task341_winomt_classification_gender_anti.json",
+   "source": [
+    "winomt"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 1577
+  },
+  {
+   "file": "task346_hybridqa_classification.json",
+   "source": [
+    "hybridqa"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 6497
+  },
+  {
+   "file": "task349_squad2.0_answerable_unanswerable_question_classification.json",
+   "source": [
+    "squad2.0"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 2,
+   "instances": 6498
+  },
+  {
+   "file": "task350_winomt_classification_gender_identifiability_pro.json",
+   "source": [
+    "winomt"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 3158
+  },
+  {
+   "file": "task351_winomt_classification_gender_identifiability_anti.json",
+   "source": [
+    "winomt"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 3154
+  },
+  {
+   "file": "task353_casino_classification_negotiation_elicit_pref.json",
+   "source": [
+    "casino"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 750
+  },
+  {
+   "file": "task354_casino_classification_negotiation_no_need.json",
+   "source": [
+    "casino"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 384
+  },
+  {
+   "file": "task355_casino_classification_negotiation_other_need.json",
+   "source": [
+    "casino"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 814
+  },
+  {
+   "file": "task356_casino_classification_negotiation_self_need.json",
+   "source": [
+    "casino"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 1924
+  },
+  {
+   "file": "task357_casino_classification_negotiation_small_talk.json",
+   "source": [
+    "casino"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 2076
+  },
+  {
+   "file": "task358_casino_classification_negotiation_uv_part.json",
+   "source": [
+    "casino"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 258
+  },
+  {
+   "file": "task359_casino_classification_negotiation_vouch_fair.json",
+   "source": [
+    "casino"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 874
+  },
+  {
+   "file": "task375_classify_type_of_sentence_in_debate.json",
+   "source": [
+    "ddo"
+   ],
+   "license": [
+    "CC BY-SA 3.0"
+   ],
+   "labels": 4,
+   "instances": 400
+  },
+  {
+   "file": "task380_boolq_yes_no_question.json",
+   "source": [
+    "boolq"
+   ],
+   "license": [
+    "CC BY-SA 3.0"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task389_torque_generate_temporal_question.json",
+   "source": [
+    "torque"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 5,
+   "instances": 2267
+  },
+  {
+   "file": "task391_causal_relationship.json",
+   "source": [
+    "cod3s"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 2283
+  },
+  {
+   "file": "task392_inverse_causal_relationship.json",
+   "source": [
+    "cod3s"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 2603
+  },
+  {
+   "file": "task404_grailqa_paraphrase_validation.json",
+   "source": [
+    "grailqa"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 2,
+   "instances": 1209
+  },
+  {
+   "file": "task428_senteval_inversion.json",
+   "source": [
+    "senteval"
+   ],
+   "license": [
+    "BSD"
+   ],
+   "labels": 2,
+   "instances": 6499
+  },
+  {
+   "file": "task429_senteval_tense.json",
+   "source": [
+    "senteval"
+   ],
+   "license": [
+    "BSD"
+   ],
+   "labels": 2,
+   "instances": 6486
+  },
+  {
+   "file": "task430_senteval_subject_count.json",
+   "source": [
+    "senteval"
+   ],
+   "license": [
+    "BSD"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task431_senteval_object_count.json",
+   "source": [
+    "senteval"
+   ],
+   "license": [
+    "BSD"
+   ],
+   "labels": 2,
+   "instances": 6498
+  },
+  {
+   "file": "task462_qasper_classification.json",
+   "source": [
+    "qasper"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 3,
+   "instances": 1337
+  },
+  {
+   "file": "task472_haspart_classification.json",
+   "source": [
+    "haspart_kb"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 5903
+  },
+  {
+   "file": "task476_cls_english_books_classification.json",
+   "source": [
+    "cls"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 1985
+  },
+  {
+   "file": "task477_cls_english_dvd_classification.json",
+   "source": [
+    "cls"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 1964
+  },
+  {
+   "file": "task478_cls_english_music_classification.json",
+   "source": [
+    "cls"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 1970
+  },
+  {
+   "file": "task493_review_polarity_classification.json",
+   "source": [
+    "amazon_polarity"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 6499
+  },
+  {
+   "file": "task494_review_polarity_answer_generation.json",
+   "source": [
+    "amazon_polarity"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 5016
+  },
+  {
+   "file": "task498_scruples_anecdotes_whoiswrong_classification.json",
+   "source": [
+    "scruples"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 4,
+   "instances": 3644
+  },
+  {
+   "file": "task501_scruples_anecdotes_post_type_verification.json",
+   "source": [
+    "scruples"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task502_scruples_anecdotes_whoiswrong_verification.json",
+   "source": [
+    "scruples"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task503_scruples_anecdotes_isanswerable.json",
+   "source": [
+    "scruples"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 597
+  },
+  {
+   "file": "task508_scruples_dilemmas_more_ethical_isidentifiable.json",
+   "source": [
+    "scruples"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 6498
+  },
+  {
+   "file": "task515_senteval_odd_word_out.json",
+   "source": [
+    "senteval"
+   ],
+   "license": [
+    "BSD"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task516_senteval_conjoints_inversion.json",
+   "source": [
+    "senteval"
+   ],
+   "license": [
+    "BSD"
+   ],
+   "labels": 2,
+   "instances": 6499
+  },
+  {
+   "file": "task564_discofuse_classification.json",
+   "source": [
+    "discofuse"
+   ],
+   "license": [
+    "CC BY-SA 3.0"
+   ],
+   "labels": 13,
+   "instances": 1000
+  },
+  {
+   "file": "task566_circa_classification.json",
+   "source": [
+    "circa"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 5476
+  },
+  {
+   "file": "task567_circa_text_generation.json",
+   "source": [
+    "circa"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 10,
+   "instances": 2877
+  },
+  {
+   "file": "task573_air_dialogue_classification.json",
+   "source": [
+    "air_dialogue"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 4,
+   "instances": 2635
+  },
+  {
+   "file": "task575_air_dialogue_classification.json",
+   "source": [
+    "air_dialogue"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 3954
+  },
+  {
+   "file": "task583_udeps_eng_coarse_pos_tagging.json",
+   "source": [
+    "universal_dependencies___english_dependency_treebank"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 17,
+   "instances": 6061
+  },
+  {
+   "file": "task586_amazonfood_polarity_classification.json",
+   "source": [
+    "amazon_fine_food_reviews"
+   ],
+   "license": [
+    "CC0: Public Domain"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task587_amazonfood_polarity_correction_classification.json",
+   "source": [
+    "amazon_fine_food_reviews"
+   ],
+   "license": [
+    "CC0: Public Domain"
+   ],
+   "labels": 2,
+   "instances": 6370
+  },
+  {
+   "file": "task588_amazonfood_rating_classification.json",
+   "source": [
+    "amazon_fine_food_reviews"
+   ],
+   "license": [
+    "CC0: Public Domain"
+   ],
+   "labels": 5,
+   "instances": 6499
+  },
+  {
+   "file": "task590_amazonfood_summary_correction_classification.json",
+   "source": [
+    "amazon_fine_food_reviews"
+   ],
+   "license": [
+    "CC0: Public Domain"
+   ],
+   "labels": 2,
+   "instances": 6392
+  },
+  {
+   "file": "task638_multi_woz_classification.json",
+   "source": [
+    "multi_woz_v22"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 4580
+  },
+  {
+   "file": "task640_esnli_classification.json",
+   "source": [
+    "e_snli"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 3,
+   "instances": 100
+  },
+  {
+   "file": "task641_esnli_classification.json",
+   "source": [
+    "e_snli"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 3,
+   "instances": 198
+  },
+  {
+   "file": "task642_esnli_classification.json",
+   "source": [
+    "e_snli"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 300
+  },
+  {
+   "file": "task672_nummersense.json",
+   "source": [
+    "numersense"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 12,
+   "instances": 6500
+  },
+  {
+   "file": "task673_google_wellformed_query_classification.json",
+   "source": [
+    "google_wellformed_query"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 2,
+   "instances": 5318
+  },
+  {
+   "file": "task679_hope_edi_english_text_classification.json",
+   "source": [
+    "hope_edi"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 3837
+  },
+  {
+   "file": "task681_hope_edi_malayalam_text_classification.json",
+   "source": [
+    "hope_edi"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 3,
+   "instances": 1969
+  },
+  {
+   "file": "task738_perspectrum_classification.json",
+   "source": [
+    "perspectrum"
+   ],
+   "license": [
+    "CC BY-SA"
+   ],
+   "labels": 2,
+   "instances": 6401
+  },
+  {
+   "file": "task750_aqua_multiple_choice_answering.json",
+   "source": [
+    "aqua"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 5,
+   "instances": 6500
+  },
+  {
+   "file": "task766_craigslist_bargains_classification.json",
+   "source": [
+    "craigslist_bargains"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 200
+  },
+  {
+   "file": "task767_craigslist_bargains_classification.json",
+   "source": [
+    "craigslist_bargains"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 6,
+   "instances": 1200
+  },
+  {
+   "file": "task833_poem_sentiment_classification.json",
+   "source": [
+    "poem_sentiment"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 284
+  },
+  {
+   "file": "task834_mathdataset_classification.json",
+   "source": [
+    "mathmatics_dataset"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 5,
+   "instances": 3983
+  },
+  {
+   "file": "task859_prost_question_generation.json",
+   "source": [
+    "prost"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 8,
+   "instances": 94
+  },
+  {
+   "file": "task869_cfq_mcd1_sql_to_explanation.json",
+   "source": [
+    "cfq_mcd1"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 198
+  },
+  {
+   "file": "task879_schema_guided_dstc8_classification.json",
+   "source": [
+    "schema_guided_dstc8"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 2,
+   "instances": 2305
+  },
+  {
+   "file": "task880_schema_guided_dstc8_classification.json",
+   "source": [
+    "schema_guided_dstc8"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 5,
+   "instances": 1341
+  },
+  {
+   "file": "task881_schema_guided_dstc8_classification.json",
+   "source": [
+    "schema_guided_dstc8"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 5,
+   "instances": 1160
+  },
+  {
+   "file": "task889_goemotions_classification.json",
+   "source": [
+    "go_emotions"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 5,
+   "instances": 500
+  },
+  {
+   "file": "task892_gap_reverse_coreference_resolution.json",
+   "source": [
+    "gap"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 9,
+   "instances": 193
+  },
+  {
+   "file": "task893_gap_fill_the_blank_coreference_resolution.json",
+   "source": [
+    "gap"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 9,
+   "instances": 100
+  },
+  {
+   "file": "task904_hate_speech_offensive_classification.json",
+   "source": [
+    "hate_speech_offensive"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task905_hate_speech_offensive_classification.json",
+   "source": [
+    "hate_speech_offensive"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task925_coached_conv_pref_classifier.json",
+   "source": [
+    "coached_conv_pref"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 2,
+   "instances": 498
+  },
+  {
+   "file": "task929_products_reviews_classification.json",
+   "source": [
+    "generated_reviews_enth"
+   ],
+   "license": [
+    "CC BY-SA 4.0"
+   ],
+   "labels": 2,
+   "instances": 6490
+  },
+  {
+   "file": "task935_defeasible_nli_atomic_classification.json",
+   "source": [
+    "defeasible_nli_atomic"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task936_defeasible_nli_snli_classification.json",
+   "source": [
+    "defeasible_nli_atomic"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 6500
+  },
+  {
+   "file": "task937_defeasible_nli_social_classification.json",
+   "source": [
+    "defeasible_nli_atomic"
+   ],
+   "license": [
+    "MIT"
+   ],
+   "labels": 2,
+   "instances": 6499
+  },
+  {
+   "file": "task966_ruletaker_fact_checking_based_on_given_context.json",
+   "source": [
+    "ruletaker"
+   ],
+   "license": [
+    "Apache 2.0"
+   ],
+   "labels": 2,
+   "instances": 300
+  },
+  {
+   "file": "task970_sherliic_causal_relationship.json",
+   "source": [
+    "sherliic"
+   ],
+   "license": [
+    "CC BY 4.0"
+   ],
+   "labels": 2,
+   "instances": 2357
+  }
+ ]
+}

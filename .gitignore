@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Data and model artifacts (kept on HF Hub / local disk, not in git)
+data/
+checkpoints/
+models/
+*.safetensors
+*.onnx
+*.gguf
+*.bin
+
+# Benchmark scratch output (summaries in results/ are committed)
+results/raw/
+
+# Built site
+_site/
+
+# Colab upload bundles
+*.tgz
+
+# Local tool config and secrets
+.mcp.json
+.env
+.env.*
+.DS_Store
+
+# Rust
+serve/target/
+research_notes/
