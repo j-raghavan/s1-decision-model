@@ -29,12 +29,12 @@ from pathlib import Path
 from typing import Any, Literal
 
 import httpx
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel, Field
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "eval" / "jevbench"))
-from run_ollama import ollama_fetcher, score_case  # noqa: E402
+from run_ollama import OLLAMA, ollama_fetcher, score_case  # noqa: E402
 
 MODEL = os.environ.get("S1_MODEL", os.environ.get("S1_TEACHER_MODEL", "s1-gemma4-26b"))
 CALIBRATION = Path(os.environ.get("S1_CALIBRATION", ROOT / "api" / "calibration_s1.json"))
@@ -55,11 +55,39 @@ class DecisionRequest(BaseModel):
     questions: dict[str, Question] = Field(min_length=1)
 
 
+class CalibrationError(ValueError):
+    pass
+
+
 def load_calibration() -> dict:
-    """Per-type defaults: a temperature for choice and score, Platt (a, b) for noul. Identity if absent."""
-    if CALIBRATION.exists():
-        return json.loads(CALIBRATION.read_text(encoding="utf-8"))
-    return {"choice": {"temperature": 1.0}, "score": {"temperature": 1.0}, "noul": {"a": 1.0, "b": 0.0}}
+    """Per-type defaults: a temperature for choice and score, Platt (a, b) for noul. Identity if absent.
+    Raises CalibrationError for a file that would make answers meaningless (missing keys, non-positive or
+    non-finite temperature, non-finite Platt parameters)."""
+    if not CALIBRATION.exists():
+        return {"choice": {"temperature": 1.0}, "score": {"temperature": 1.0}, "noul": {"a": 1.0, "b": 0.0}}
+    try:
+        cal = json.loads(CALIBRATION.read_text(encoding="utf-8"))
+        temps = [float(cal[t]["temperature"]) for t in ("choice", "score")]
+        platt = [float(cal["noul"]["a"]), float(cal["noul"]["b"])]
+    except (KeyError, TypeError, ValueError) as exc:
+        raise CalibrationError(f"{CALIBRATION}: missing or malformed field ({exc!r})") from exc
+    if not all(math.isfinite(t) and t > 0 for t in temps) or not all(math.isfinite(x) for x in platt):
+        raise CalibrationError(f"{CALIBRATION}: temperatures must be finite and positive, Platt parameters finite")
+    return cal
+
+
+def ollama_status(timeout: float = 5.0) -> tuple[bool, str]:
+    """Whether the Ollama server answers and has MODEL loaded or available."""
+    base = OLLAMA.removesuffix("/api/generate")
+    try:
+        r = httpx.get(f"{base}/api/tags", timeout=timeout)
+        r.raise_for_status()
+    except httpx.HTTPError as exc:
+        return False, f"Ollama unreachable at {base}: {exc}"
+    names = {m.get("name", "") for m in r.json().get("models", [])}
+    if MODEL not in names and f"{MODEL}:latest" not in names:
+        return False, f"model {MODEL} not found in Ollama"
+    return True, "ok"
 
 
 def softmax_t(probs: dict[str, float], t: float) -> dict[str, float]:
@@ -71,8 +99,13 @@ def softmax_t(probs: dict[str, float], t: float) -> dict[str, float]:
 
 
 def answer(question: Question, by_key: dict[str, float], cal: dict) -> dict:
+    if not by_key or sum(by_key.values()) <= 0:
+        raise HTTPException(502, "the model returned no probability for any option")
     if question.type == "noul":
-        p = by_key["true"] / (by_key["true"] + by_key["false"])
+        yes, no = by_key.get("true", 0.0), by_key.get("false", 0.0)
+        if yes + no <= 0:
+            raise HTTPException(502, "the model returned no probability for yes or no")
+        p = yes / (yes + no)
         logit = math.log(max(p, 1e-15)) - math.log(max(1 - p, 1e-15))
         z = cal["noul"]["a"] * logit + cal["noul"]["b"]
         p_cal = 1 / (1 + math.exp(-max(min(z, 50), -50)))
@@ -104,14 +137,26 @@ app = FastAPI(title="s1-model", version="1.0.0")
 
 
 @app.get("/healthz")
-def healthz() -> dict:
-    return {"ok": True, "model": MODEL, "version": VERSION,
-            "calibration": str(CALIBRATION) if CALIBRATION.exists() else "identity"}
+def healthz(response: Response) -> dict:
+    """Ready only if the calibration is valid and Ollama serves the model; 503 otherwise."""
+    model_ok, model_msg = ollama_status()
+    try:
+        load_calibration()
+        cal_ok, cal_msg = True, str(CALIBRATION) if CALIBRATION.exists() else "identity"
+    except CalibrationError as exc:
+        cal_ok, cal_msg = False, str(exc)
+    ok = model_ok and cal_ok
+    if not ok:
+        response.status_code = 503
+    return {"ok": ok, "model": MODEL, "version": VERSION, "ollama": model_msg, "calibration": cal_msg}
 
 
 @app.post("/v1/decisions")
 def decisions(req: DecisionRequest) -> dict:
-    cal = load_calibration()
+    try:
+        cal = load_calibration()
+    except CalibrationError as exc:
+        raise HTTPException(500, f"server calibration is invalid: {exc}") from exc
     t0 = time.perf_counter()
     answers, tokens = {}, 0
     with httpx.Client(timeout=600) as client:

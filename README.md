@@ -98,7 +98,7 @@ See [LINEAGE.md](LINEAGE.md).
 | `pipeline/` | training data: source conversion, Super-NaturalInstructions audit, rule and synthetic generators, teacher labelling, soft targets, mixing |
 | `eval/` | JevBench subset and custom test set, runners (vLLM, Ollama, transformers, hosted APIs), scoring and calibration |
 | `api/` | the `/v1/decisions` server and its calibration |
-| `colab/` | the GPU session cells that trained and evaluated the model, with their watcher |
+| `colab/` | the GPU session cells behind the release (training, target regeneration, merge, release check) and an archive of earlier experiments |
 | `scripts/` | provenance gate, LINEAGE renderer, LoRA merge, site builder |
 | `results/` | scores for every evaluated system, and the logs of the sessions behind the release |
 | `site/` | the GitHub Pages website |
@@ -112,6 +112,8 @@ uv run ruff check .
 uv run --no-project python scripts/check_lineage.py        # provenance and licence gate
 uv run --no-project python scripts/build_site.py           # website into _site/
 ```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the checks a change must pass and the known structural debt.
 
 ## Citation
 

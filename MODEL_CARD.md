@@ -89,7 +89,8 @@ print(decide({"ticket": "I was charged twice for order 4471."}, "Which team shou
              {"billing": "Payments and refunds", "shipping": "Deliveries", "tech": "Bugs and outages"}))
 ```
 
-The complete version (yes/no and ordinal questions, option formatting identical to training) is
+This short version writes every option as `key: description`. The complete version (yes/no and ordinal questions,
+and option formatting identical to training, checked by tests) is
 [examples/quickstart.py](https://github.com/j-raghavan/s1-decision-model/blob/main/examples/quickstart.py). For a
 calibrated HTTP endpoint (`POST /v1/decisions`), see `api/server.py` in the repository. Serving with vLLM: request one
 token with `logprobs` and `temperature 0` on the same prompt.

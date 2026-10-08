@@ -70,7 +70,12 @@ def make_batches(rows: list[dict], batch: int, rng: random.Random, bucket: bool 
 
 
 def token_lengths(tok, rows: list[dict]) -> list[int]:
-    """Prompt length in tokens of every row, as rendered for training."""
+    """Prompt length in tokens of every row, as rendered for training.
+
+    One token short of the forward pass: Gemma 4's tokenizer adds nothing with add_special_tokens=True, while
+    last_logits prepends <bos>. So --max-row-tokens admits rows one token longer, and a batch can exceed
+    --max-batch-tokens by at most one token per row. Kept as is because the released model was trained with it;
+    changing it would change which rows are dropped and how batches split."""
     prompts = [prompt_and_keys({"state": r["state"], "question": r["question"], "task_type": r["task_type"]})[0] for r in rows]
     lengths: list[int] = []
     for i in range(0, len(prompts), 2048):

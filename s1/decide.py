@@ -13,6 +13,7 @@ model's cases in every slice, so a failed or partial scoring run can never make 
 
 from __future__ import annotations
 
+import gzip
 import json
 import math
 from pathlib import Path
@@ -25,9 +26,11 @@ RULE_NET_LOSS_SHARE = 0.02  # more net breaks than 2% of the rule-slice cases co
 
 
 def load_predictions(path: Path) -> dict[str, dict]:
-    """case_id -> record, for answered yes/no and choice cases."""
+    """case_id -> record, for answered yes/no and choice cases (plain or gzipped JSON lines)."""
     out = {}
-    for line in Path(path).open(encoding="utf-8"):
+    path = Path(path)
+    lines = gzip.open(path, "rt", encoding="utf-8") if path.suffix == ".gz" else path.open(encoding="utf-8")
+    for line in lines:
         r = json.loads(line)
         if r.get("task_type") == "score" or r.get("error") or r.get("pred") is None:
             continue

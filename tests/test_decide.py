@@ -1,33 +1,38 @@
-"""The full-run decision rules must reproduce verdicts already known from saved runs.
-
-Uses local prediction files (results/raw is not in git); skipped when they are absent.
+"""The decision rules must reproduce verdicts already known from saved runs, including the choice of the released
+snapshot. Predictions come from tests/fixtures/predictions (committed, no case text), so these run in CI.
 """
 
+import json
 from pathlib import Path
 
 import pytest
 
 from s1.decide import (
+    accuracy_change,
     agreement,
     assess,
     base_complete,
     choose_snapshot,
+    choose_snapshot_ni,
     coverage,
     gate_informative,
     load_predictions,
     mcnemar_p,
+    non_inferior,
     paired,
     regression,
     slice_mean_accuracy,
 )
 
-RAW = Path(__file__).resolve().parents[1] / "results" / "raw"
+FIXTURES = Path(__file__).resolve().parent / "fixtures" / "predictions"
 BASE, P1, P2 = "gemma4-26b-bf16-vllm", "g26-pilot-vllm", "g26-pilot2-vllm"
-need = pytest.mark.skipif(not (RAW / "custom" / P2 / "predictions.jsonl").exists(), reason="local predictions absent")
+SNAPSHOTS = ("F-step-500", "F-step-1000", "F-step-1500", "F-step-2000", "F-step-2500", "F-last")
 
 
 def preds(suite, run):
-    return load_predictions(RAW / suite / run / "predictions.jsonl")
+    path = FIXTURES / suite / f"{run}.jsonl.gz"
+    assert path.exists(), f"missing fixture {path}"
+    return load_predictions(path)
 
 
 def test_mcnemar_exact_values():
@@ -36,7 +41,6 @@ def test_mcnemar_exact_values():
     assert abs(mcnemar_p(22, 7) - 0.0081) < 0.0005  # hand-checked binomial tail, doubled
 
 
-@need
 def test_known_custom_comparisons():
     base = preds("custom", BASE)
     assert paired(base, preds("custom", P2)) == {"n": 960, "newly_wrong": 22, "newly_right": 7, "p": pytest.approx(0.0081, abs=5e-4)}
@@ -44,7 +48,6 @@ def test_known_custom_comparisons():
     assert (p1["newly_wrong"], p1["newly_right"]) == (8, 14)
 
 
-@need
 def test_regression_rule_on_known_runs():
     base = preds("custom", BASE)
     r2 = regression(base, preds("custom", P2))
@@ -54,7 +57,6 @@ def test_regression_rule_on_known_runs():
     assert regression(base, preds("custom", "g26-pilot"))["regresses"] is False        # pilot 1 through HF
 
 
-@need
 def test_accuracy_matches_scorer_and_excludes_score_slices():
     jev = preds("jevbench", P2)
     assert all(r["task_type"] != "score" for r in jev.values())
@@ -63,7 +65,6 @@ def test_accuracy_matches_scorer_and_excludes_score_slices():
     assert slice_mean_accuracy(preds("custom", BASE)) == pytest.approx(0.940, abs=0.0006)
 
 
-@need
 def test_missing_or_partial_scores_are_never_eligible():
     base_c, base_j = preds("custom", BASE), preds("jevbench", BASE)
     # the reviewer's reproduction: a failed custom run used to make a candidate eligible
@@ -81,7 +82,6 @@ def test_missing_or_partial_scores_are_never_eligible():
     assert base_complete({}, base_j, len(base_c), len(base_j)) is False
 
 
-@need
 def test_selection_and_positive_control_on_known_runs():
     base_c, base_j = preds("custom", BASE), preds("jevbench", BASE)
     cands = {"pilot1": (preds("custom", P1), preds("jevbench", P1)), "pilot2": (preds("custom", P2), preds("jevbench", P2))}
@@ -94,15 +94,12 @@ def test_selection_and_positive_control_on_known_runs():
     assert gate_informative(base_c, {}) is False                    # a failed control run never counts
 
 
-@need
 def test_canary_hf_vs_vllm_agreement_on_pilot1():
     a, n = agreement(preds("jevbench", "g26-pilot"), preds("jevbench", P1))  # same adapter, HF vs vLLM
     assert n == 1600 and a >= 0.97
 
 
-@need
 def test_non_inferiority_rule_on_known_runs():
-    from s1.decide import accuracy_change, choose_snapshot_ni, non_inferior
     base_c, base_j = preds("custom", BASE), preds("jevbench", BASE)
     assert accuracy_change(base_c, preds("custom", P2)) == pytest.approx(-15 / 960)
     assert non_inferior(base_c, preds("custom", P2)) is False      # -1.56 points: just outside the 1.5 margin
@@ -113,3 +110,28 @@ def test_non_inferiority_rule_on_known_runs():
                                                        "failed": ({}, preds("jevbench", P2))})
     rows = {r["name"]: r for r in report}
     assert best == "pilot1" and rows["failed"]["eligible"] is False and rows["pilot2"]["eligible"] is False
+
+
+def test_release_snapshot_choice_replays():
+    """The rule the training session applied on dev must pick step 1500, the released snapshot, and agree with the
+    session's own record (results/bostrain_session/decisions.json). The untuned reference is the session's own dev
+    scoring of the untuned model, saved as base-bos-vllm-2."""
+    base_c, base_j = preds("custom_dev2", "base-bos-vllm-2"), preds("jevbench_dev", "base-bos-vllm-2")
+    cands = {s: (preds("custom_dev2", f"bos-{s}-vllm"), preds("jevbench_dev", f"bos-{s}-vllm")) for s in SNAPSHOTS}
+    best, report = choose_snapshot_ni(base_c, base_j, cands)
+    assert best == "F-step-1500"
+    session = json.loads((Path(__file__).resolve().parents[1] / "results/bostrain_session/decisions.json").read_text())
+    recorded = {r["name"]: r for r in session["final"]["report"]}
+    assert session["final"]["best"] == best
+    for row in report:
+        rec = recorded[row["name"]]
+        assert row["eligible"] == rec["eligible"], row["name"]
+        assert row["jev_acc"] == pytest.approx(rec["jev_acc"], abs=1e-9), row["name"]
+        assert row["custom_change"] == pytest.approx(rec["custom_change"], abs=1e-9), row["name"]
+
+
+def test_release_session_uses_the_non_inferiority_rule():
+    """The session that trained the released model must select with choose_snapshot_ni, not the older rule."""
+    src = (Path(__file__).resolve().parents[1] / "colab" / "session_bos_train.py").read_text()
+    assert "choose_snapshot_ni(" in src
+    assert "choose_snapshot(" not in src.replace("choose_snapshot_ni(", "")
