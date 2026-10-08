@@ -30,7 +30,9 @@ HF_MODEL = "https://huggingface.co/j-raghavan/s1-gemma4-26b-decision"
 HF_DATASET = "https://huggingface.co/datasets/j-raghavan/s1-decision-data"
 MODEL_ID = "j-raghavan/s1-gemma4-26b-decision"
 # Link or button to a hosted demo. Empty: the page shows "Demo coming soon".
-DEMO_URL = ""
+DEMO_URL = "playground.html"
+SPACE_ID = "j-raghavan/s1-decision-demo"  # the ZeroGPU Space that serves the playground (space/ in this repo)
+GRADIO_CLIENT = "https://cdn.jsdelivr.net/npm/@gradio/client@2.7.1/dist/index.min.js"
 
 # Public leaderboard: run id -> (display name, short column name, tag). Order is the default display order;
 # the tables sort by mean accuracy. A run is shown only if its scores file exists for that suite.
@@ -254,10 +256,11 @@ def render(name: str, **values: str) -> str:
 
 
 def page(title: str, description: str, active: str, content: str) -> str:
-    nav = {"index": "", "leaderboard": ""}
+    nav = {"index": "", "leaderboard": "", "playground": ""}
     nav[active] = ' aria-current="page"'
     return render("layout.html", title=esc(title), description=esc(description), content=content,
-                  nav_index=nav["index"], nav_leaderboard=nav["leaderboard"], github=GITHUB, hf_model=HF_MODEL,
+                  nav_index=nav["index"], nav_leaderboard=nav["leaderboard"], nav_playground=nav["playground"],
+                  github=GITHUB, hf_model=HF_MODEL,
                   methodology=gh("docs/methodology.md"), license=gh("LICENSE"))
 
 
@@ -284,7 +287,7 @@ def build_index(jev: dict, custom: dict) -> str:
                           detail + f'Calibrated: {CALIBRATED_README["s1_custom"]:.3f}. JSON-state and slide-layout '
                           'rules; Jev has no predictions on this set.'))
     if DEMO_URL:
-        demo = (f'<a class="btn btn-primary" href="{esc(DEMO_URL)}" rel="noopener">Open the demo</a>')
+        demo = f'<a class="btn btn-primary" href="{esc(DEMO_URL)}">Try it in the playground</a>'
     else:
         demo = '<span class="btn btn-disabled" aria-disabled="true">Demo coming soon</span>'
     return page(
@@ -337,6 +340,14 @@ def check_readout(readme: Path) -> None:
         print(f"warning: README.md no longer mentions {', '.join(missing)}; update CALIBRATED_README", file=sys.stderr)
 
 
+def build_playground() -> str:
+    return page("Playground: s1 decision model",
+                "Try s1: give it a state and typed questions, get calibrated probabilities from the released model.",
+                "playground",
+                render("playground.html", space_id=SPACE_ID, space_url=f"https://huggingface.co/spaces/{SPACE_ID}",
+                       client_url=GRADIO_CLIENT, hf_model=HF_MODEL))
+
+
 def build(out: Path, results: Path = ROOT / "results") -> dict:
     jev, custom = suite_table(results, "jevbench"), suite_table(results, "custom")
     for need in (S1_RUN, JEV_RUN, BASE_RUN):
@@ -352,6 +363,8 @@ def build(out: Path, results: Path = ROOT / "results") -> dict:
         shutil.copy2(f, out / "assets" / f.name)
     (out / "index.html").write_text(build_index(jev, custom), encoding="utf-8")
     (out / "leaderboard.html").write_text(build_leaderboard(jev, custom), encoding="utf-8")
+    (out / "playground.html").write_text(build_playground(), encoding="utf-8")
+    shutil.copy2(ROOT / "space" / "examples.json", out / "assets" / "examples.json")  # one source for both UIs
     (out / ".nojekyll").write_text("", encoding="utf-8")
     check_readout(ROOT / "README.md")
     return {"jevbench": jev, "custom": custom}

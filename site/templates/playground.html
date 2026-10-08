@@ -1,0 +1,48 @@
+<section class="section wrap">
+  <h1>Playground</h1>
+  <p class="section-lede">Give s1 a state and typed questions. It returns a calibrated probability for every option, from
+  one forward pass of the released model, served on Hugging Face ZeroGPU. The first request after a quiet spell waits
+  for a GPU to be assigned; later ones take about a second.</p>
+
+  <div class="pg-examples" role="group" aria-label="Examples" id="pg-examples"></div>
+
+  <div class="pg-grid">
+    <div class="pg-panel">
+      <div class="pg-head"><h2>State</h2><span class="pg-hint">JSON or plain text</span></div>
+      <textarea id="pg-state" class="pg-editor" spellcheck="false" rows="12" aria-label="State"></textarea>
+      <div class="pg-err" id="pg-state-err" role="status"></div>
+
+      <div class="pg-head"><h2>Questions</h2>
+        <div class="pg-toggle" role="tablist" aria-label="Question editor">
+          <button type="button" role="tab" id="pg-mode-form" aria-selected="true">Builder</button>
+          <button type="button" role="tab" id="pg-mode-json" aria-selected="false">JSON</button>
+        </div>
+      </div>
+      <div id="pg-builder"></div>
+      <button type="button" class="btn pg-add" id="pg-add">Add question</button>
+      <textarea id="pg-questions" class="pg-editor" spellcheck="false" rows="14" aria-label="Questions as JSON" hidden></textarea>
+      <div class="pg-err" id="pg-q-err" role="status"></div>
+
+      <div class="pg-actions">
+        <button type="button" class="btn btn-primary" id="pg-run">Decide</button>
+        <span class="pg-status" id="pg-status" role="status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <div class="pg-panel">
+      <div class="pg-head"><h2>Answers</h2><span class="pg-hint" id="pg-latency"></span></div>
+      <div id="pg-answers" class="pg-answers"><p class="pg-empty">Run a request to see typed answers here.</p></div>
+      <details class="pg-raw"><summary>Response JSON</summary><pre><code id="pg-raw"></code></pre></details>
+      <details class="pg-raw"><summary>Call it from code</summary><pre><code id="pg-code"></code></pre></details>
+    </div>
+  </div>
+
+  <p class="pg-foot">Runs <a href="$hf_model">s1-gemma4-26b-decision</a> (bf16) in the
+  <a href="$space_url">$space_id</a> Space. Free GPU time is limited per visitor per day; signing in to Hugging Face
+  raises it. Requests are not stored by this page. s1 is not affiliated with TypeSafe AI (Jev). Do not use it as the
+  only control for high-stakes decisions.</p>
+</section>
+<script type="module">
+  window.S1_PLAYGROUND = { space: "$space_id", client: "$client_url" };
+</script>
+<script type="module" src="assets/playground.js"></script>

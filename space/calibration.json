@@ -1,0 +1,21 @@
+{
+  "fitted_on": [
+    "jevbench_dev:bos-F-step-1500-vllm",
+    "custom_dev2:bos-F-step-1500-vllm"
+  ],
+  "n": {
+    "choice": 1383,
+    "score": 540,
+    "noul": 1183
+  },
+  "choice": {
+    "temperature": 1.3378480538520525
+  },
+  "score": {
+    "temperature": 0.8066970336441215
+  },
+  "noul": {
+    "a": 0.8159758417645558,
+    "b": 0.6563471088070122
+  }
+}

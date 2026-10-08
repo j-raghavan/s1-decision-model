@@ -33,3 +33,6 @@ _site/
 # Rust
 serve/target/
 research_notes/
+
+# copied in by scripts/deploy_space.py
+space/quickstart.py
