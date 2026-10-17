@@ -157,11 +157,18 @@ predictions (`api/calibration_s1.json`).
 
 The chat API (`/api/chat`, `ollama run`) works as well. I configured the build with Ollama's `gemma4-large` renderer
 and thinking turned off (`scripts/ollama_configure.py`), so a chat message renders as the training prompt without the
-`Answer:` prefill, and the model answers in one token instead of reasoning first. On 400 JevBench cases sent as chat
-messages, the option probabilities read from the reply's first-token `logprobs` came within a point of the raw path
-(aegis2 0.830 vs 0.820, MMLU-Pro 0.575 vs 0.585, prompt injections 0.920 vs 0.930). Read the probabilities rather
-than the reply text: without the prefill, about 3% of MMLU-Pro replies start working the problem instead of giving a
-letter.
+`Answer:` prefill, and the model answers in one token instead of reasoning first. On the full JevBench test set sent
+as chat messages, the option probabilities read from the reply's first-token `logprobs` score 0.801 (ECE 0.077), the
+same as the raw path (0.801, ECE 0.074); paired against raw on the same machine, 23 answers are worse and 16 better
+(p = 0.34). Reading the reply text instead scores 0.800, and 6 of 1,592 replies gave no usable letter, so use the
+probabilities when you need them.
+
+On Linux, this build needs Ollama's MLX runtime, which the standard install script leaves out; without it,
+`ollama pull` stops with "this model requires MLX support". Install the add-on from the same release
+(`ollama-linux-amd64-mlx.tar.zst`, extracted into Ollama's install prefix, `/usr/local` by default). On an NVIDIA GPU
+it ran the full test set at 8 parallel requests in 13.6 minutes on the raw path, and its runner restarted twice
+asking for `MLX_CUDA_GRAPH_CACHE_SIZE` above 400 (15 of 1,700 requests failed). For NVIDIA servers, vLLM (above) is
+the faster and better-tested path.
 
 To build it yourself instead: download this repo, write a Modelfile with `FROM <folder>`, run
 `ollama create <name> --quantize int4 -f Modelfile`, then `python3 scripts/ollama_configure.py --source <name> --target <name>`.
