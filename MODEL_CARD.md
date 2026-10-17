@@ -111,7 +111,12 @@ S1_BACKEND=vllm VLLM_URL=http://localhost:8001 uv run --extra api uvicorn api.se
 curl -s localhost:8000/healthz      # ok: true once vLLM serves the model and the calibration loads
 ```
 
-`/healthz` returns 503 until vLLM lists the model, so it works as a readiness probe. If you start vLLM with
+`/healthz` returns 503 until vLLM lists the model, so it works as a readiness probe. Set `S1_CHOICE_ORDERS=2` to
+score each choice question a second time with its options reversed and average the two. On the JevBench test set
+this cut answers that change when options are reordered from 9.6% to 6.0% (Jev: 4.8%), with accuracy 0.814 vs
+0.809 (not a significant difference) and ECE 0.081 vs 0.085, for about 75 ms instead of 38 ms per choice decision in
+bf16. I chose it on the dev split and then scored the test set with it once; yes/no and ordinal questions keep one
+pass, because reversing yes/no options cost accuracy on dev. If you start vLLM with
 `--served-model-name`, set `S1_MODEL` to the same name. If you call vLLM directly instead, send `/v1/completions` (not
 chat) with `max_tokens: 1`, `temperature: 0` and `logprobs: 20` on a prompt that starts with the literal `<bos>`;
 without it the model loses 4 to 13 points on knowledge questions.

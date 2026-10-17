@@ -57,6 +57,11 @@ VERSION = "s1-gemma4-26b-v1"
 # for a model that adds it itself (Ollama's library gemma4).
 BOS = "<bos>" if os.environ.get("S1_ADD_BOS", "1") == "1" else ""
 FETCH = vllm_fetcher(VLLM_URL, BOS) if BACKEND == "vllm" else ollama_fetcher(BOS)
+# S1_CHOICE_ORDERS=2 also scores each choice question with its options reversed and averages the two: about a third
+# fewer answers that change with option order on JevBench, at twice the model calls for choice questions.
+CHOICE_ORDERS = int(os.environ.get("S1_CHOICE_ORDERS", "1"))
+if CHOICE_ORDERS not in (1, 2):
+    raise ValueError(f"S1_CHOICE_ORDERS must be 1 or 2, not {CHOICE_ORDERS}")
 
 
 class Question(BaseModel):
@@ -198,9 +203,14 @@ def decisions(req: DecisionRequest) -> dict:
             case = {"state": req.state, "question": question, "task_type": question["type"]}
             try:
                 scored = score_case(client, MODEL, case, fetch=FETCH)
+                by_key, tokens = scored["by_key"], tokens + scored["input_tokens"]
+                if question["type"] == "choice" and CHOICE_ORDERS == 2:
+                    flipped = {**question, "criteria": dict(reversed(list(question["criteria"].items())))}
+                    second = score_case(client, MODEL, {**case, "question": flipped}, fetch=FETCH)
+                    by_key = {k: (p + second["by_key"][k]) / 2 for k, p in by_key.items()}
+                    tokens += second["input_tokens"]
             except httpx.HTTPError as exc:
                 raise HTTPException(502, f"model call failed: {exc}") from exc
-            answers[key] = answer(q, scored["by_key"], cal)
-            tokens += scored["input_tokens"]
+            answers[key] = answer(q, by_key, cal)
     return {"model": VERSION, "answers": answers,
             "usage": {"latency_ms": round((time.perf_counter() - t0) * 1000, 1), "input_tokens": tokens}}

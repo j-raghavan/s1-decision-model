@@ -1,0 +1,36 @@
+name: Release
+
+# A milestone is a results/releases/v<version>.json file on main. For each one whose tag does not exist yet, this
+# checks its numbers against the committed results (scripts/release_note.py) and publishes a GitHub release with
+# that tag on this commit. Existing tags are skipped, so re-runs never release twice.
+
+on:
+  push:
+    branches: [main]
+    paths: ["results/releases/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Publish releases for new milestone files
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          for f in results/releases/v*.json; do
+            tag=$(basename "$f" .json)
+            if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+              echo "$tag exists; skipping"
+              continue
+            fi
+            python3 scripts/release_note.py "$f" > notes.md
+            gh release create "$tag" --target "$GITHUB_SHA" --title "s1 $tag" --notes-file notes.md
+          done
