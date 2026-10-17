@@ -133,3 +133,74 @@ def test_end_to_end_through_the_ollama_client(monkeypatch, tmp_path):
     assert ans["choice"] == "billing" and abs(sum(ans["probabilities"].values()) - 1) < 1e-9
     assert prompts and all(p.startswith("<bos>") and not p.startswith("<bos><bos>") for p in prompts)
     assert prompts[0].endswith("Answer:") and "billing: Payments" in prompts[0]
+
+
+def test_end_to_end_through_the_vllm_client(monkeypatch, tmp_path):
+    """S1_BACKEND=vllm: real score_case and vLLM fetcher against a mock OpenAI-compatible server. The prompt must
+    reach /v1/completions with exactly one <bos>, one token and top logprobs, and /healthz must check /v1/models."""
+    import json
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    import run_ollama
+
+    served, requests = "j-raghavan/s1-gemma4-26b-decision", []
+
+    class Handler(BaseHTTPRequestHandler):
+        def log_message(self, *args):
+            pass
+
+        def reply(self, body: dict) -> None:
+            data = json.dumps(body).encode()
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(data)
+
+        def do_GET(self):
+            assert self.path == "/v1/models"
+            self.reply({"data": [{"id": served}]})
+
+        def do_POST(self):
+            assert self.path == "/v1/completions"
+            requests.append(json.loads(self.rfile.read(int(self.headers["Content-Length"]))))
+            top = {" A": -2.5, " B": -0.1, " C": -4.0}
+            self.reply({"choices": [{"text": " B", "logprobs": {"top_logprobs": [top]}}], "usage": {"prompt_tokens": 42}})
+
+    httpd = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    url = f"http://127.0.0.1:{httpd.server_address[1]}"
+    monkeypatch.setattr(server, "BACKEND", "vllm")
+    monkeypatch.setattr(server, "VLLM_URL", url)
+    monkeypatch.setattr(server, "MODEL", served)
+    monkeypatch.setattr(server, "FETCH", run_ollama.vllm_fetcher(url, "<bos>"))
+    cal = tmp_path / "cal.json"
+    cal.write_text('{"choice": {"temperature": 1.0}, "score": {"temperature": 1.0}, "noul": {"a": 1.0, "b": 0.0}}')
+    monkeypatch.setattr(server, "CALIBRATION", cal)
+    try:
+        c = TestClient(server.app)
+        health = c.get("/healthz")
+        r = c.post("/v1/decisions", json={"state": {"ticket": "charged twice"}, "questions": {
+            "team": {"type": "choice", "instructions": "Which team?",
+                     "criteria": {"billing": "Payments", "shipping": "Deliveries", "tech": "Bugs"}}}})
+        monkeypatch.setattr(server, "MODEL", "some-other-model")
+        missing = c.get("/healthz")
+    finally:
+        httpd.shutdown()
+    assert health.status_code == 200 and health.json()["backend"] == "vllm", health.text
+    assert missing.status_code == 503 and "not served by vLLM" in missing.json()["vllm"]
+    assert r.status_code == 200, r.text
+    ans = r.json()["answers"]["team"]
+    assert ans["choice"] == "shipping" and abs(sum(ans["probabilities"].values()) - 1) < 1e-9
+    assert r.json()["usage"]["input_tokens"] == 42
+    prompts = [q["prompt"] for q in requests]
+    assert prompts and all(p.startswith("<bos>") and not p.startswith("<bos><bos>") for p in prompts)
+    assert all(q["model"] == served and q["max_tokens"] == 1 and q["temperature"] == 0 and q["logprobs"] == 20
+               for q in requests)
+    assert prompts[0].endswith("Answer:") and "billing: Payments" in prompts[0]
+
+
+def test_vllm_calibration_file_is_valid(monkeypatch):
+    """The shipped vLLM calibration loads, and was fitted on dev splits only."""
+    monkeypatch.setattr(server, "CALIBRATION", server.ROOT / "api" / "calibration_s1_vllm.json")
+    cal = server.load_calibration()
+    assert all(src.split(":")[0].endswith(("_dev", "_dev2")) for src in cal["fitted_on"])
