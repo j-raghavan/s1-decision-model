@@ -204,3 +204,25 @@ def test_vllm_calibration_file_is_valid(monkeypatch):
     monkeypatch.setattr(server, "CALIBRATION", server.ROOT / "api" / "calibration_s1_vllm.json")
     cal = server.load_calibration()
     assert all(src.split(":")[0].endswith(("_dev", "_dev2")) for src in cal["fitted_on"])
+
+
+def test_choice_orders_2_averages_the_reversed_order(client, monkeypatch):
+    """S1_CHOICE_ORDERS=2: a choice question is scored as given and reversed, and the two are averaged."""
+    seen = []
+
+    def by_position(client, model, case, fetch=None):  # 0.7 on whichever option is listed first
+        keys = list(case["question"]["criteria"])
+        seen.append(keys)
+        return {"by_key": {k: (0.7 if i == 0 else 0.3 / (len(keys) - 1)) for i, k in enumerate(keys)},
+                "label_mass": 1.0, "calls": 1, "input_tokens": 10}
+
+    monkeypatch.setattr(server, "score_case", by_position)
+    monkeypatch.setattr(server, "CHOICE_ORDERS", 2)
+    r = client.post("/v1/decisions", json={"state": {}, "questions": {
+        "team": {"type": "choice", "instructions": "?", "criteria": {"a": "A", "b": "B", "c": "C"}},
+        "urgent": {"type": "noul", "instructions": "?"}}})
+    assert r.status_code == 200
+    assert seen[:2] == [["a", "b", "c"], ["c", "b", "a"]] and len(seen) == 3  # yes/no stays one pass
+    probs = r.json()["answers"]["team"]["probabilities"]
+    assert probs["a"] == pytest.approx(probs["c"]) and probs["a"] > probs["b"]  # (0.7 + 0.15) / 2 each
+    assert r.json()["usage"]["input_tokens"] == 30

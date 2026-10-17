@@ -14,6 +14,7 @@ Every cell can be dry-run locally with a small model or `tests/mock_vllm.py` thr
 | `session_release_check.py` | downloaded the published model and checked `examples/quickstart.py`, the model-card snippet and agreement with the saved test answers |
 | `session_vllm_check.py` | downloaded the published model and checked the GPU-server path in `MODEL_CARD.md` (vLLM in bf16 and FP8, the API with `S1_BACKEND=vllm`, its readiness check, JevBench accuracy and per-decision latency) |
 | `session_ollama_chat_check.py` | pulled `jrlabs01/s1` from the Ollama registry and scored the full JevBench test set through the raw path and the default chat path |
+| `session_order_check.py` | scored every JevBench dev and test case in up to three option orders, for `eval/jevbench/order_average.py` and the API's `S1_CHOICE_ORDERS` |
 | `watch_session.sh` | follows a running session's log, with a heartbeat, until it ends |
 
 ## Archive
