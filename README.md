@@ -58,7 +58,8 @@ model = Gemma4ForConditionalGeneration.from_pretrained(
 
 **Locally with Ollama** (int4 build, about 17 GB): `ollama pull jrlabs01/s1`, then `examples/try_ollama.sh` runs four
 sample decisions, and `examples/ollama_decide.py` asks your own question and prints each option's probability and the
-timings (standard library only).
+timings (standard library only). The chat API and `ollama run` answer in one token too, with thinking off; for
+probabilities, read the first token's `logprobs` (details in the [model card](MODEL_CARD.md#local-quantised-ollama-int4)).
 
 **HTTP API.** `api/server.py` serves `POST /v1/decisions` with per-type calibration, backed by the local Ollama model
 by default:
