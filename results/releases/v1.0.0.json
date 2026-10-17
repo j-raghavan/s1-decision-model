@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "jevbench": [
+    {"system": "s1", "run": "g26-bos-vllm", "accuracy": 0.808, "ece": 0.083,
+     "calibrated": {"accuracy": 0.817, "row": "<bos> fine-tune (step 1500)"}},
+    {"system": "s1 with S1_CHOICE_ORDERS=2", "run": "s1-choice-2orders", "accuracy": 0.814, "ece": 0.081},
+    {"system": "Jev 1.13 (closed)", "run": "jev-1.13.0", "accuracy": 0.835, "ece": 0.081}
+  ]
+}
