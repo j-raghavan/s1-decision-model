@@ -150,11 +150,21 @@ python3 examples/ollama_decide.py --state '{"ticket": "I was charged twice."}' \
 `examples/ollama_decide.py` (in the GitHub repository) builds the prompt and reads the probabilities correctly; Ollama
 lists two spellings of each option letter (`" A"` and `"A"`), and only the first, most likely one must be kept.
 
-Send **raw** prompts (`"raw": true`) that start with `<bos>`: the build does not add it, and Ollama's own chat
-formatting changes the prompt and the answers. The repository's API does this for you
+For decisions, send **raw** prompts (`"raw": true`) that start with `<bos>` and end with the `Answer:` prefill: that is
+exactly the training prompt. The repository's API does this for you
 (`S1_MODEL=jrlabs01/s1 uv run --extra api uvicorn api.server:app`), with calibration fitted on the int4 build's own dev
-predictions (`api/calibration_s1.json`). To build it yourself instead: download this repo, write a Modelfile with
-`FROM <folder>`, and run `ollama create <name> --quantize int4 -f Modelfile`.
+predictions (`api/calibration_s1.json`).
+
+The chat API (`/api/chat`, `ollama run`) works as well. I configured the build with Ollama's `gemma4-large` renderer
+and thinking turned off (`scripts/ollama_configure.py`), so a chat message renders as the training prompt without the
+`Answer:` prefill, and the model answers in one token instead of reasoning first. On 400 JevBench cases sent as chat
+messages, the option probabilities read from the reply's first-token `logprobs` came within a point of the raw path
+(aegis2 0.830 vs 0.820, MMLU-Pro 0.575 vs 0.585, prompt injections 0.920 vs 0.930). Read the probabilities rather
+than the reply text: without the prefill, about 3% of MMLU-Pro replies start working the problem instead of giving a
+letter.
+
+To build it yourself instead: download this repo, write a Modelfile with `FROM <folder>`, run
+`ollama create <name> --quantize int4 -f Modelfile`, then `python3 scripts/ollama_configure.py --source <name> --target <name>`.
 
 Measured cost of int4 against bf16 on the test sets: JevBench 0.801 vs 0.808 (the same answer on 92% of cases; paired
 36 better, 48 worse, p = 0.23) and custom 0.966 vs 0.971 (p = 0.18); neither difference is significant. On a 32 GB
