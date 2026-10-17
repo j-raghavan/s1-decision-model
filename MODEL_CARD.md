@@ -52,8 +52,8 @@ Held-out test sets. The released snapshot was chosen on separate dev splits by a
   study covers the cases with usable option log-probabilities, where s1's raw JevBench score is 0.804 rather than 0.808.
 - Differences under about ±1.5 points are within noise at this test size.
 
-Latency per decision on one NVIDIA RTX PRO 6000 through vLLM: median 28 ms (p95 95 ms) with FP8 weights, 40 ms
-(133 ms) in bf16.
+Latency per decision on one NVIDIA RTX PRO 6000 through vLLM: median 27 ms (p95 121 ms) with FP8 weights, 39 ms
+(155 ms) in bf16.
 
 ## How to use
 
@@ -92,8 +92,52 @@ print(decide({"ticket": "I was charged twice for order 4471."}, "Which team shou
 This short version writes every option as `key: description`. The complete version (yes/no and ordinal questions,
 and option formatting identical to training, checked by tests) is
 [examples/quickstart.py](https://github.com/j-raghavan/s1-decision-model/blob/main/examples/quickstart.py). For a
-calibrated HTTP endpoint (`POST /v1/decisions`), see `api/server.py` in the repository. Serving with vLLM: request one
-token with `logprobs` and `temperature 0` on the same prompt.
+calibrated HTTP endpoint (`POST /v1/decisions`), see `api/server.py` in the repository.
+
+### On a GPU server (vLLM)
+
+I served and measured s1 with vLLM 0.31.0. Run the model behind vLLM's OpenAI-compatible server and put the
+repository's API in front of it; the API builds the prompt exactly as in training, prepends `<bos>`, reads the option
+probabilities and applies calibration fitted on bf16 vLLM dev predictions (`api/calibration_s1_vllm.json`):
+
+```bash
+pip install vllm==0.31.0
+vllm serve j-raghavan/s1-gemma4-26b-decision --port 8001 \
+    --max-model-len 8192 --max-logprobs 20 --gpu-memory-utilization 0.90 --enforce-eager
+# add --quantization fp8 for FP8 weights on cards with FP8 support
+
+uv sync --extra api
+S1_BACKEND=vllm VLLM_URL=http://localhost:8001 uv run --extra api uvicorn api.server:app --port 8000
+curl -s localhost:8000/healthz      # ok: true once vLLM serves the model and the calibration loads
+```
+
+`/healthz` returns 503 until vLLM lists the model, so it works as a readiness probe. If you start vLLM with
+`--served-model-name`, set `S1_MODEL` to the same name. If you call vLLM directly instead, send `/v1/completions` (not
+chat) with `max_tokens: 1`, `temperature: 0` and `logprobs: 20` on a prompt that starts with the literal `<bos>`;
+without it the model loses 4 to 13 points on knowledge questions.
+
+Sizing: I ran exactly these commands on the published weights, downloaded from the Hub, on one 96 GB RTX PRO 6000.
+
+| | bf16 | FP8 (`--quantization fp8`) |
+| --- | --- | --- |
+| Weights loaded (vLLM's count) | 48.5 GiB | 25.8 GiB |
+| KV cache left at `--gpu-memory-utilization 0.90` | 34.4 GiB, about 20 requests at 8,192 tokens | 56.5 GiB, about 33 requests at 8,192 tokens |
+| GPU | 80 GB or more (H100, H200, A100 80 GB, RTX PRO 6000) | a card with FP8 support (Ada, Hopper or Blackwell, such as L40S, H100) |
+| JevBench test, raw / dev-calibrated | 0.811 / 0.817 | 0.809 / 0.816 |
+| Latency per decision, vLLM, one request at a time | 39 ms median, 155 ms p95 | 27 ms median, 121 ms p95 |
+| Latency through the API, one request at a time | 51 ms median, 208 ms p95 | 40 ms median, 248 ms p95 |
+
+- FP8 against bf16 on the same 1,600 accuracy cases: 23 answers worse and 17 better (p = 0.43), the same top answer on
+  96.6%; the difference is not significant. Scoring the 1,700 test cases took 47 s in bf16 and 35 s in FP8 at 64
+  concurrent requests.
+- The API matches vLLM scored directly on 97.5% (bf16) and 98.5% (FP8) of 200 fixed cases; every difference was a near
+  tie (the top two options within 0.07, three of them exact ties), from vLLM batching the direct run.
+- Long inputs cost the most: agent traces (ATBench) take a median 87 ms in bf16 (64 ms in FP8) and the 77-option intent
+  questions (Banking77), which need two passes, about 135 ms in both; they are also where accuracy is lowest, so
+  measure them on your own data.
+- Latencies are with `--enforce-eager`, the configuration I measured; CUDA graphs (dropping the flag) are usually faster.
+- A quick check after deploying: the example `curl` from the API section should put most of the probability on
+  `billing`, and `examples/quickstart.py` against the same weights should give the same top answer.
 
 ### Local, quantised (Ollama int4)
 

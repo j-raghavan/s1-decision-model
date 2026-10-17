@@ -35,7 +35,7 @@ Held-out test sets; the released snapshot was picked on separate dev splits by a
   per-task calibrators fitted on the dev splits only ([results/calibration_from_dev.md](results/calibration_from_dev.md)).
 - Differences under about ±1.5 points are within noise on the 1,700-case subset. Per-slice tables:
   [leaderboard](https://j-raghavan.github.io/s1-decision-model/leaderboard.html), `results/`.
-- Latency per decision on one RTX PRO 6000 (vLLM): 28 ms median with FP8 weights, 40 ms in bf16. The int4 build runs
+- Latency per decision on one RTX PRO 6000 (vLLM): 27 ms median with FP8 weights, 39 ms in bf16. The int4 build runs
   on a 32 GB Apple-silicon laptop at about 0.8 s per decision; its accuracy cost against bf16 is not significant.
 
 s1 is an independent project, not affiliated with TypeSafe AI (Jev) or the JevBench authors. Jev's numbers come from
@@ -60,7 +60,8 @@ model = Gemma4ForConditionalGeneration.from_pretrained(
 sample decisions, and `examples/ollama_decide.py` asks your own question and prints each option's probability and the
 timings (standard library only).
 
-**HTTP API.** `api/server.py` serves `POST /v1/decisions` with per-type calibration, backed by that local Ollama model:
+**HTTP API.** `api/server.py` serves `POST /v1/decisions` with per-type calibration, backed by the local Ollama model
+by default:
 
 ```bash
 uv sync --extra api
@@ -70,6 +71,18 @@ curl -s localhost:8000/v1/decisions -H 'content-type: application/json' -d '{
   "questions": {"team": {"type": "choice", "instructions": "Which team should handle this?",
     "criteria": {"billing": "Payments and refunds", "shipping": "Deliveries", "tech": "Bugs"}}}}'
 ```
+
+**On an NVIDIA GPU server.** Serve the Hugging Face weights with vLLM and run the same API in front of it, with its own
+calibration fitted on bf16 vLLM dev predictions:
+
+```bash
+vllm serve j-raghavan/s1-gemma4-26b-decision --port 8001 --max-model-len 8192 --max-logprobs 20 --enforce-eager
+S1_BACKEND=vllm VLLM_URL=http://localhost:8001 uv run --extra api uvicorn api.server:app --port 8000
+```
+
+bf16 needs an 80 GB or larger GPU; FP8 (`--quantization fp8`) halves the weights for 48 GB cards with FP8 support. GPU
+sizing, latency and the readiness check are in the
+[model card](MODEL_CARD.md#on-a-gpu-server-vllm).
 
 Two things matter for correct results: prompts must start with `<bos>` (Gemma 4's tokenizer does not add it), and the
 model must be loaded with `Gemma4ForConditionalGeneration` (a plain causal-LM class silently skips the weights).

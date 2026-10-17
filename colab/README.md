@@ -12,6 +12,7 @@ Every cell can be dry-run locally with a small model or `tests/mock_vllm.py` thr
 | `session_relabel.py` | regenerated the soft targets published in the dataset, with the training session's exact code bundle |
 | `session_package2.py` | merged the adapter into the base weights, checked the merge on 200 fixed cases, uploaded the weights |
 | `session_release_check.py` | downloaded the published model and checked `examples/quickstart.py`, the model-card snippet and agreement with the saved test answers |
+| `session_vllm_check.py` | downloaded the published model and checked the GPU-server path in `MODEL_CARD.md` (vLLM in bf16 and FP8, the API with `S1_BACKEND=vllm`, its readiness check, JevBench accuracy and per-decision latency) |
 | `watch_session.sh` | follows a running session's log, with a heartbeat, until it ends |
 
 ## Archive

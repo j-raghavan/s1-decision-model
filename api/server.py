@@ -1,13 +1,19 @@
 """v1 /v1/decisions API: the s1 decision model behind a typed-decision endpoint.
 
 Serves the fine-tuned Gemma 4 26B-A4B decision model (LoRA trained with <bos>, merged; Hugging Face
-j-raghavan/s1-gemma4-26b-decision) through a local Ollama, int4, published as `jrlabs01/s1`. One forward pass per
-question reads the option-letter probabilities (two passes for more than 26 options). Ollama does not add <bos> to
-an imported model, so the API prepends it (S1_ADD_BOS).
-Probabilities are calibrated per answer type with api/calibration_s1.json, fitted on the dev splits scored through
-this same Ollama model (the test sets were not used).
+j-raghavan/s1-gemma4-26b-decision) through one of two backends, chosen with S1_BACKEND:
+
+  ollama (default)  a local Ollama, int4, published as `jrlabs01/s1`; calibration api/calibration_s1.json
+  vllm              a vLLM OpenAI-compatible server at VLLM_URL serving the Hugging Face weights;
+                    calibration api/calibration_s1_vllm.json
+
+One forward pass per question reads the option-letter probabilities (two passes for more than 26 options). Neither
+Ollama (for an imported model) nor Gemma 4's tokenizer under vLLM adds <bos>, so the API prepends it (S1_ADD_BOS).
+Each calibration is fitted per answer type on the dev splits scored through that backend (the test sets were not
+used). S1_CALIBRATION overrides the file.
 
     uv run --extra api uvicorn api.server:app --port 8000
+    S1_BACKEND=vllm VLLM_URL=http://localhost:8001 uv run --extra api uvicorn api.server:app --port 8000
     curl -s localhost:8000/v1/decisions -H 'content-type: application/json' -d '{
       "state": {"ticket": "I was charged twice for order 4471."},
       "questions": {"team": {"type": "choice", "instructions": "Which team should handle this?",
@@ -34,14 +40,23 @@ from pydantic import BaseModel, Field
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "eval" / "jevbench"))
-from run_ollama import OLLAMA, ollama_fetcher, score_case  # noqa: E402
+from run_ollama import OLLAMA, ollama_fetcher, score_case, vllm_fetcher  # noqa: E402
 
-MODEL = os.environ.get("S1_MODEL", os.environ.get("S1_TEACHER_MODEL", "jrlabs01/s1"))  # ollama pull jrlabs01/s1
-CALIBRATION = Path(os.environ.get("S1_CALIBRATION", ROOT / "api" / "calibration_s1.json"))
+BACKEND = os.environ.get("S1_BACKEND", "ollama")
+if BACKEND not in ("ollama", "vllm"):
+    raise ValueError(f"S1_BACKEND must be ollama or vllm, not {BACKEND!r}")
+VLLM_URL = os.environ.get("VLLM_URL", "http://localhost:8001")
+# The model name the backend serves: the Ollama tag, or vLLM's --served-model-name (by default the path or Hub id
+# given to `vllm serve`).
+DEFAULT_MODEL = {"ollama": "jrlabs01/s1", "vllm": "j-raghavan/s1-gemma4-26b-decision"}[BACKEND]
+MODEL = os.environ.get("S1_MODEL", os.environ.get("S1_TEACHER_MODEL", DEFAULT_MODEL))
+DEFAULT_CALIBRATION = {"ollama": "calibration_s1.json", "vllm": "calibration_s1_vllm.json"}[BACKEND]
+CALIBRATION = Path(os.environ.get("S1_CALIBRATION", ROOT / "api" / DEFAULT_CALIBRATION))
 VERSION = "s1-gemma4-26b-v1"
-# Ollama does not add <bos> to a model imported from safetensors, and Gemma 4 degrades without it, so the API
-# prepends it; set S1_ADD_BOS=0 only for a model that adds it itself (Ollama's library gemma4).
-FETCH = ollama_fetcher("<bos>" if os.environ.get("S1_ADD_BOS", "1") == "1" else "")
+# Gemma 4 degrades without <bos>, and neither backend adds it here, so the API prepends it; set S1_ADD_BOS=0 only
+# for a model that adds it itself (Ollama's library gemma4).
+BOS = "<bos>" if os.environ.get("S1_ADD_BOS", "1") == "1" else ""
+FETCH = vllm_fetcher(VLLM_URL, BOS) if BACKEND == "vllm" else ollama_fetcher(BOS)
 
 
 class Question(BaseModel):
@@ -88,6 +103,24 @@ def ollama_status(timeout: float = 5.0) -> tuple[bool, str]:
     if MODEL not in names and f"{MODEL}:latest" not in names:
         return False, f"model {MODEL} not found in Ollama"
     return True, "ok"
+
+
+def vllm_status(timeout: float = 5.0) -> tuple[bool, str]:
+    """Whether the vLLM server answers and serves MODEL."""
+    base = VLLM_URL.rstrip("/")
+    try:
+        r = httpx.get(f"{base}/v1/models", timeout=timeout)
+        r.raise_for_status()
+    except httpx.HTTPError as exc:
+        return False, f"vLLM unreachable at {base}: {exc}"
+    names = {m.get("id", "") for m in r.json().get("data", [])}
+    if MODEL not in names:
+        return False, f"model {MODEL} not served by vLLM (serving: {', '.join(sorted(names)) or 'nothing'})"
+    return True, "ok"
+
+
+def backend_status() -> tuple[bool, str]:
+    return vllm_status() if BACKEND == "vllm" else ollama_status()
 
 
 def softmax_t(probs: dict[str, float], t: float) -> dict[str, float]:
@@ -138,8 +171,8 @@ app = FastAPI(title="s1-model", version="1.0.0")
 
 @app.get("/healthz")
 def healthz(response: Response) -> dict:
-    """Ready only if the calibration is valid and Ollama serves the model; 503 otherwise."""
-    model_ok, model_msg = ollama_status()
+    """Ready only if the calibration is valid and the backend serves the model; 503 otherwise."""
+    model_ok, model_msg = backend_status()
     try:
         load_calibration()
         cal_ok, cal_msg = True, str(CALIBRATION) if CALIBRATION.exists() else "identity"
@@ -148,7 +181,7 @@ def healthz(response: Response) -> dict:
     ok = model_ok and cal_ok
     if not ok:
         response.status_code = 503
-    return {"ok": ok, "model": MODEL, "version": VERSION, "ollama": model_msg, "calibration": cal_msg}
+    return {"ok": ok, "model": MODEL, "version": VERSION, "backend": BACKEND, BACKEND: model_msg, "calibration": cal_msg}
 
 
 @app.post("/v1/decisions")

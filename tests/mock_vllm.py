@@ -1,6 +1,6 @@
 """Stand-in for a vLLM OpenAI-compatible server, for dry runs of Colab cells on a machine without a GPU.
 
-Serves /health, /tokenize and /v1/completions (next-token top logprobs over option letters, deterministic per
+Serves /health, /v1/models, /tokenize and /v1/completions (next-token top logprobs over option letters, deterministic per
 model and prompt). /tokenize treats a leading "<bos>" as token 2, as Gemma 4's tokenizer does. Unknown model names
 get a 404, so adapter probes can fail as they would on a real server.
 
@@ -43,7 +43,11 @@ def main() -> None:
             self.wfile.write(data)
 
         def do_GET(self):
-            self.reply(200, {}) if self.path == "/health" else self.reply(404, {"error": "not found"})
+            if self.path == "/health":
+                return self.reply(200, {})
+            if self.path == "/v1/models":
+                return self.reply(200, {"object": "list", "data": [{"id": n, "object": "model"} for n in sorted(names)]})
+            self.reply(404, {"error": "not found"})
 
         def do_POST(self):
             req = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
